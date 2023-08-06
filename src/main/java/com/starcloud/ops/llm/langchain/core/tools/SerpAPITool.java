@@ -3,10 +3,9 @@ package com.starcloud.ops.llm.langchain.core.tools;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.starcloud.ops.llm.langchain.config.OpenAIConfig;
 import com.starcloud.ops.llm.langchain.config.SerpAPIToolConfig;
 import com.starcloud.ops.llm.langchain.core.tools.base.BaseTool;
 import kong.unirest.HttpResponse;
@@ -14,10 +13,8 @@ import kong.unirest.JacksonObjectMapper;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
-import kotlin.jvm.Transient;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.OkHttpClient;
 
 import java.util.Optional;
 
@@ -30,10 +27,10 @@ public class SerpAPITool extends BaseTool<SerpAPITool.Request, String> {
 
     private String description = "A search engine. Useful for when you need to answer questions about current events. Input should be a search query.";
 
-    @Transient
+    @JsonIgnore
     private String lr = "lang_zh-CN|lang_en";
 
-    @Transient
+    @JsonIgnore
     private String apiKey;
 
     public SerpAPITool(String serpapiApiKey) {

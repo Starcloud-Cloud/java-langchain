@@ -1,18 +1,19 @@
 package com.starcloud.ops.llm.langchain.core.tools;
 
 import cn.hutool.json.JSONUtil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.starcloud.ops.llm.langchain.core.tools.base.BaseTool;
-import kotlin.jvm.Transient;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Slf4j
 public class SerpapiXXTool extends BaseTool<SerpapiXXTool.Request, String> {
 
@@ -21,10 +22,10 @@ public class SerpapiXXTool extends BaseTool<SerpapiXXTool.Request, String> {
 
     private String description = "A search engine. Useful for when you need to answer questions about current events. Input should be a search query.";
 
-    @Transient
+    @JsonIgnore
     private String lr = "lang_zh-CN|lang_en";
 
-    @Transient
+    @JsonIgnore
     private String apiKey;
 
     public SerpapiXXTool(String apiKey) {

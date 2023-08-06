@@ -76,7 +76,10 @@ public class AgentExecutor extends Chain<Map<String, Object>> {
 
     protected Map<String, BaseTool> getToolMaps() {
 
-        Map<String, BaseTool> toolMap = Optional.ofNullable(this.getTools()).orElse(new ArrayList<>()).stream().map(tool -> tool.setCallbackManager(this.getCallbackManager())).collect(Collectors.toMap(BaseTool::getName, Function.identity()));
+        Map<String, BaseTool> toolMap = Optional.ofNullable(this.getTools()).orElse(new ArrayList<>()).stream().map(tool -> {
+            tool.setCallbackManager(this.getCallbackManager());
+            return tool;
+        }).collect(Collectors.toMap(BaseTool::getName, Function.identity()));
         return toolMap;
     }
 
@@ -148,10 +151,11 @@ public class AgentExecutor extends Chain<Map<String, Object>> {
 
     /**
      * 判断执行条件是否满足
-     * @todo 返回异常，让上游感知到
+     *
      * @param iterations
      * @param timeElapsed
      * @return
+     * @todo 返回异常，让上游感知到
      */
     protected Boolean _shouldContinue(Integer iterations, long timeElapsed) {
         if (iterations > this.getMaxIterations()) {
@@ -233,8 +237,9 @@ public class AgentExecutor extends Chain<Map<String, Object>> {
             } else {
 
                 Map<String, Object> toolRunKwargs = this.actionAgent.toolRunLoggingKwargs();
-
-                observation = new InvalidTool().setCallbackManager(this.callbackManager).run(agentAction.getToolInput(), this.getVerbose(), toolRunKwargs);
+                InvalidTool invalidTool =  new InvalidTool();
+                invalidTool.setCallbackManager(this.callbackManager);
+                observation = invalidTool.run(agentAction.getToolInput(), this.getVerbose(), toolRunKwargs);
             }
 
             agentAction.setObservation(observation);

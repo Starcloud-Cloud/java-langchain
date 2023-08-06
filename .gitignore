@@ -1,6 +1,6 @@
 ######################################################################
 # Build Tools
-/yudao-server/src/main/resources/config/**
+/src/main/resources/config/**
 /META-INF
 /**/.DS_Store
 .gradle

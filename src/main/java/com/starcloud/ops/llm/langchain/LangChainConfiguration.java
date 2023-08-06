@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import;
 import javax.annotation.PostConstruct;
 
 /**
- * 分发域启动类
+ * 启动类
  */
 @Slf4j
 @Configuration

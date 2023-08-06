@@ -2,11 +2,11 @@ package com.starcloud.ops.llm.langchain.core.tools.base;
 
 import cn.hutool.core.util.TypeUtil;
 import cn.hutool.json.JSONUtil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.starcloud.ops.llm.langchain.core.callbacks.BaseCallbackManager;
 import com.starcloud.ops.llm.langchain.core.callbacks.CallbackManagerForToolRun;
 import com.starcloud.ops.llm.langchain.core.tools.utils.OpenAIUtils;
-import kotlin.jvm.Transient;
 import lombok.Data;
 
 import java.lang.reflect.Type;
@@ -24,7 +24,7 @@ public abstract class BaseTool<Q, R> {
 
     private Boolean returnDirect = false;
 
-    @Transient
+    @JsonIgnore
     private BaseCallbackManager callbackManager;
 
     protected abstract R _run(Q input);

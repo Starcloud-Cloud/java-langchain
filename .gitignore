@@ -1,6 +1,6 @@
 ######################################################################
 # Build Tools
-/src/main/resources/config/**
+**/resources/config/**
 /META-INF
 /**/.DS_Store
 .gradle

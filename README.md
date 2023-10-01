@@ -57,10 +57,12 @@
 <dependency>
     <groupId>com.github.Starcloud-Cloud</groupId>
     <artifactId>java-langchain</artifactId>
-    <version>version</version>
+    <version>v1.0.0</version>
 </dependency>
 ```
-查看最新版本 [version](xx)
+查看最新版本 [version](https://jitpack.io/#Starcloud-Cloud/java-langchain)
+
+[![](https://jitpack.io/v/Starcloud-Cloud/java-langchain.svg)](https://jitpack.io/#Starcloud-Cloud/java-langchain)
 
 
 ### 4.2 LLMs

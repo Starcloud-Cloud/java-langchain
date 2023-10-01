@@ -8,10 +8,30 @@ import java.util.List;
 
 public interface BasicVectorStore {
 
+    /**
+     * 新增分段
+     * @param segments
+     */
     void addSegment(List<DocumentSegmentDTO> segments);
 
+    /**
+     * 相似查询
+     * @param queryVector
+     * @param queryDTO
+     * @return
+     */
     List<KnnQueryHit> knnSearch(List<Float> queryVector, KnnQueryDTO queryDTO);
 
-    void removeSegment(List<String> segmentIds);
+    /**
+     * 删除分段
+     * @param documentIds
+     */
+    void deleteSegment(List<String> documentIds);
+
+    /**
+     * 更新分段
+     * @param documentDTOS
+     */
+    void updateSegment(List<DocumentSegmentDTO> documentDTOS);
 
 }

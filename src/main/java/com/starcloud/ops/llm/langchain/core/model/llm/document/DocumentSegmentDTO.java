@@ -16,7 +16,7 @@ public class DocumentSegmentDTO {
     /**
      * 数据集 id
      */
-    private String dataSetId;
+    private String datasetId;
 
     /**
      * 文档 id
@@ -28,13 +28,31 @@ public class DocumentSegmentDTO {
      */
     private String segmentId;
 
+    /**
+     * 命中次数
+     */
+    private Integer hitCount;
+
+    /**
+     * 分段序号
+     */
+    private Integer position;
+
+    private Integer wordCount;
+
+    private Long tokens;
+
+    private String segmentHash;
+
     List<Float> vector;
 
-    private String segmentText;
+    private String content;
 
     private Long tenantId;
 
     private String creator;
+
+    private Long createTime;
 
     private Boolean status;
 

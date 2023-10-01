@@ -3,9 +3,6 @@ package com.starcloud.ops.llm.langchain.core.callbacks;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.Optional;
-
 @Slf4j
 @Data
 public class StdOutCallbackHandler implements BaseCallbackHandler {

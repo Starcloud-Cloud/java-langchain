@@ -9,9 +9,11 @@ import java.util.List;
 
 public abstract class BasicTextSplitter {
 
-    private static final List<String> BACK_SEPARATORS = Arrays.asList("\n", "。", ".", "！", "!");
+    private static final List<String> BACK_SEPARATORS = Arrays.asList("\n", "。", "\\.", "！", "!", " ");
 
     private static final int DEFAULT_SIZE = 1000;
+
+    private static final int MAX_SIZE = 3000;
 
     public List<String> splitText(String text, Integer chunkSize, List<String> separators) {
         if (StringUtils.isBlank(text)) {
@@ -20,7 +22,7 @@ public abstract class BasicTextSplitter {
         if (chunkSize == null || chunkSize <= 100) {
             chunkSize = DEFAULT_SIZE;
         }
-
+        chunkSize = Math.min(MAX_SIZE, chunkSize);
         if (CollectionUtils.isEmpty(separators)) {
             separators = BACK_SEPARATORS;
         }
@@ -34,6 +36,7 @@ public abstract class BasicTextSplitter {
         for (String sep : separators) {
             if (text.contains(sep)) {
                 separator = sep;
+                break;
             }
         }
         String[] splits = text.split(separator);

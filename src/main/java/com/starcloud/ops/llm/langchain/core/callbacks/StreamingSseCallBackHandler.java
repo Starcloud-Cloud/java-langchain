@@ -2,26 +2,22 @@ package com.starcloud.ops.llm.langchain.core.callbacks;
 
 import lombok.Data;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
-import static org.springframework.web.servlet.mvc.method.annotation.SseEmitter.event;
 
 /**
  * @author starcloud
  */
+@Slf4j
+@Data
 public class StreamingSseCallBackHandler implements BaseCallbackHandler {
-    private SseEmitter emitter;
 
-    private String conversationUid;
+    private SseEmitter emitter;
 
     public StreamingSseCallBackHandler(SseEmitter emitter) {
         this.emitter = emitter;
     }
 
-    public StreamingSseCallBackHandler(SseEmitter emitter, String conversationUid) {
-        this.emitter = emitter;
-        this.conversationUid = conversationUid;
-    }
 
     @Override
     public Void onLLMStart(Object... objects) {
@@ -36,7 +32,7 @@ public class StreamingSseCallBackHandler implements BaseCallbackHandler {
         if (emitter == null) {
             return;
         }
-        StreamResult streamResult = new StreamResult(200, objects[0].toString(), conversationUid);
+        StreamResult streamResult = new StreamResult(200, objects[0].toString());
         emitter.send(streamResult);
     }
 
@@ -53,7 +49,7 @@ public class StreamingSseCallBackHandler implements BaseCallbackHandler {
         if (emitter == null) {
             return;
         }
-        emitter.send(new StreamResult(500, message, conversationUid));
+        emitter.send(new StreamResult(500, message));
     }
 
 
@@ -63,17 +59,21 @@ public class StreamingSseCallBackHandler implements BaseCallbackHandler {
         if (emitter == null) {
             return;
         }
+        emitter.send(new StreamResult(500, parseOpenApiError(message, throwable)));
+    }
+
+    protected String parseOpenApiError(String message, Throwable throwable) {
+
+        String error = "";
         if (message != null && message.contains("timeout")) {
-
-            emitter.send(new StreamResult(500, "[Timeout] " + throwable.getMessage(), conversationUid));
-
+            error = "[Timeout] " + throwable.getMessage();
         } else if (message != null && message.contains("Incorrect API key")) {
-            emitter.send(new StreamResult(500, "[Incorrect Key]", conversationUid));
+            error = "[Incorrect Key]";
         } else {
-            emitter.send(new StreamResult(500, "[Other] Please try again later", conversationUid));
+            error = "[Other] Please try again later";
         }
-        emitter.complete();
 
+        return error;
     }
 
     @Override
@@ -87,30 +87,20 @@ public class StreamingSseCallBackHandler implements BaseCallbackHandler {
     }
 
 
-    public void completeWithError(Throwable throwable) {
-
-    }
-
     @Data
-    private class StreamResult {
+    public static class StreamResult {
 
         private int code;
 
+        private String type;
+
         private String content;
 
-        private String conversationUid;
+        private String error;
 
         public StreamResult(int code, String content) {
             this.code = code;
             this.content = content;
         }
-
-        public StreamResult(int code, String content, String conversationUid) {
-            this.code = code;
-            this.content = content;
-            this.conversationUid = conversationUid;
-        }
-
     }
-
 }

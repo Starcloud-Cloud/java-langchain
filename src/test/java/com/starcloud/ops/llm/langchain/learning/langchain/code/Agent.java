@@ -17,6 +17,7 @@ import com.starcloud.ops.llm.langchain.core.tools.LoadTools;
 import com.starcloud.ops.llm.langchain.core.tools.RequestsGetTool;
 import com.starcloud.ops.llm.langchain.core.tools.base.BaseTool;
 import com.starcloud.ops.llm.langchain.core.tools.base.FunTool;
+import com.starcloud.ops.llm.langchain.core.tools.base.ToolResponse;
 import com.starcloud.ops.llm.langchain.learning.BaseTests;
 import lombok.Data;
 import lombok.SneakyThrows;
@@ -47,7 +48,7 @@ public class Agent extends BaseTests {
 
         OpenAIFunctionsAgent baseSingleActionAgent = OpenAIFunctionsAgent.fromLLMAndTools(chatOpenAI, tools);
 
-        AgentExecutor agentExecutor = AgentExecutor.fromAgentAndTools(tools, chatOpenAI, baseSingleActionAgent, baseSingleActionAgent.getCallbackManager());
+        AgentExecutor agentExecutor = AgentExecutor.fromAgentAndTools(baseSingleActionAgent, tools, chatOpenAI.getCallbackManager());
 
         agentExecutor.run("计算300的25%");
 
@@ -68,23 +69,23 @@ public class Agent extends BaseTests {
 
         OpenAIFunctionsAgent baseSingleActionAgent = OpenAIFunctionsAgent.fromLLMAndTools(chatOpenAI, tools);
 
-        AgentExecutor agentExecutor = AgentExecutor.fromAgentAndTools(tools, chatOpenAI, baseSingleActionAgent, baseSingleActionAgent.getCallbackManager());
+        AgentExecutor agentExecutor = AgentExecutor.fromAgentAndTools(baseSingleActionAgent, tools, chatOpenAI.getCallbackManager());
 
         agentExecutor.run("今天的日期是？");
 
     }
 
     @Data
-    public static class MySelfTool extends BaseTool<MySelfTool.Request, String> {
+    public static class MySelfTool extends BaseTool<MySelfTool.Request> {
 
         private String name = "MySelfTool";
 
         private String description = "返回今天的日期，用于任何需要知道今天日期的问题, 输入应该总是一个空字符串,这个函数将总是返回今天的日期，任何日期计算应该在这个函数之外进行。";
 
         @Override
-        protected String _run(Request input) {
+        protected ToolResponse _run(Request input) {
 
-            return DateUtil.now();
+            return ToolResponse.buildObservation(DateUtil.now());
         }
 
 

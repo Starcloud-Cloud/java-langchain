@@ -10,7 +10,6 @@ import com.starcloud.ops.llm.langchain.core.utils.TokenUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.Serializable;
 import java.util.*;
 
 
@@ -43,9 +42,6 @@ public abstract class BaseLanguageModel<R> {
 
     @Deprecated
     public abstract BaseMessage predictMessages(List<BaseMessage> baseMessages, List<String> stops);
-
-    @Deprecated
-    public abstract BaseMessage predictMessages(List<BaseMessage> baseMessages, List<String> stops, BaseCallbackManager callbackManager);
 
     public abstract BaseMessage predictMessages(List<BaseMessage> baseMessages, List<String> stops, List<FunctionDescription> functionDescriptions, BaseCallbackManager callbackManager);
 

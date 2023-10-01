@@ -73,13 +73,6 @@ public abstract class BaseChatModel<R> extends BaseLanguageModel<R> {
         return chatResult.getChatGenerations().get(0).getChatMessage();
     }
 
-
-    @Override
-    public BaseMessage predictMessages(List<BaseMessage> baseMessages, List<String> stops, BaseCallbackManager callbackManager) {
-        this.setCallbackManager(callbackManager);
-        return this.predictMessages(baseMessages, stops);
-    }
-
     @Override
     public BaseMessage predictMessages(List<BaseMessage> baseMessages, List<String> stops, List<FunctionDescription> functionDescriptions, BaseCallbackManager callbackManager) {
 

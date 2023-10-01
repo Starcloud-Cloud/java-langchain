@@ -4,6 +4,7 @@ import cn.hutool.core.util.NumberUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.starcloud.ops.llm.langchain.core.tools.base.BaseTool;
+import com.starcloud.ops.llm.langchain.core.tools.base.ToolResponse;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -11,16 +12,12 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-
-
 /**
  * http get 请求工具
  */
 @Slf4j
 @Data
-public class CalculatorTool extends BaseTool<CalculatorTool.Request, Number> {
+public class CalculatorTool extends BaseTool<CalculatorTool.Request> {
 
 
     private String name = "CalculatorTool";
@@ -30,7 +27,7 @@ public class CalculatorTool extends BaseTool<CalculatorTool.Request, Number> {
 
     @SneakyThrows
     @Override
-    protected Number _run(Request input) {
+    protected ToolResponse _run(Request input) {
 
         log.info("CalculatorTool: {}", input.getQuery());
         ExpressionParser parser = new SpelExpressionParser();
@@ -43,7 +40,7 @@ public class CalculatorTool extends BaseTool<CalculatorTool.Request, Number> {
 //
 //        Object result = engine.eval(input.getQuery());
 
-        return result;
+        return ToolResponse.buildObservation(result);
     }
 
 

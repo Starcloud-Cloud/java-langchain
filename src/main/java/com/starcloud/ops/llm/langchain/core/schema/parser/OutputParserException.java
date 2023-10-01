@@ -5,13 +5,15 @@ import lombok.Data;
 @Data
 public class OutputParserException extends RuntimeException {
 
-    Object error;
 
     String observation;
 
-    String llmOutput;
+    Object llmOutput;
 
     Boolean sendToLLM;
 
 
+    public OutputParserException(String message) {
+        super(message);
+    }
 }

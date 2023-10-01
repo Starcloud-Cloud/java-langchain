@@ -113,12 +113,6 @@ public abstract class BaseLLM<R> extends BaseLanguageModel<R> {
         return this.predictMessages(baseMessages, stops, null, null);
     }
 
-    @Override
-    public BaseMessage predictMessages(List<BaseMessage> baseMessages, List<String> stops, BaseCallbackManager callbackManager) {
-
-        return this.predictMessages(baseMessages, stops, null, null);
-    }
-
 
     @Override
     public BaseMessage predictMessages(List<BaseMessage> baseMessages, List<String> stops, List<FunctionDescription> functionDescriptions, BaseCallbackManager callbackManager) {

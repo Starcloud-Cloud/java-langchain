@@ -7,19 +7,19 @@ import com.starcloud.ops.llm.langchain.core.tools.base.ToolResponse;
 import lombok.Data;
 
 @Data
-public class InvalidTool extends BaseTool<Object> implements BaseRequestsTool {
+public class FailTool extends BaseTool<Object> {
 
-    private String name = "{invalid_tool}";
+    private String name = "{fail_tool}";
 
-    private String description = "Called when tool name is invalid.";
+    private String description = "Calling the tool failed and returned nothing.";
 
-    public InvalidTool(String name) {
+    public FailTool(String name) {
         this.name = name;
     }
 
     @Override
     protected ToolResponse _run(Object input) {
-        return ToolResponse.buildObservation(this.name + " is not a valid tool, try another one.");
+        return ToolResponse.buildObservation(this.name + " call failed with no return.");
     }
 
 

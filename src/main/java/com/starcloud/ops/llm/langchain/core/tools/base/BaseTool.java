@@ -2,11 +2,12 @@ package com.starcloud.ops.llm.langchain.core.tools.base;
 
 import cn.hutool.core.util.TypeUtil;
 import cn.hutool.json.JSONUtil;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.starcloud.ops.llm.langchain.core.callbacks.BaseCallbackManager;
+import com.starcloud.ops.llm.langchain.core.callbacks.CallbackManager;
 import com.starcloud.ops.llm.langchain.core.callbacks.CallbackManagerForToolRun;
 import com.starcloud.ops.llm.langchain.core.tools.utils.OpenAIUtils;
+import kotlin.jvm.Transient;
 import lombok.Data;
 
 import java.lang.reflect.Type;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
-public abstract class BaseTool<Q, R> {
+public abstract class BaseTool<Q> {
 
     private String name;
 
@@ -24,34 +25,32 @@ public abstract class BaseTool<Q, R> {
 
     private Boolean returnDirect = false;
 
-    @JsonIgnore
-    private BaseCallbackManager callbackManager;
+    @Transient
+    private BaseCallbackManager callbackManager = new CallbackManager();
 
-    protected abstract R _run(Q input);
+    protected abstract ToolResponse _run(Q input);
 
-    public R run(Q input) {
+    public ToolResponse run(Q input) {
         return this.run(input, false, new HashMap<>());
     }
 
-    public R run(Q input, Boolean verbose, Map<String, Object> toolRunKwargs) {
+    public ToolResponse run(Q input, Boolean verbose, Map<String, Object> toolRunKwargs) {
 
         CallbackManagerForToolRun toolRun = this.callbackManager.onToolStart(this.getName(), input, verbose);
 
-        R result = null;
+        ToolResponse result = null;
 
         try {
 
-
-            //@todo input if JsonNode
-
             if (this instanceof FunTool) {
                 Class<Q> qq = (Class<Q>) ((FunTool) this).getInputCls();
-                result = this._run(JSONUtil.toBean(input.toString(), qq));
+                result = this._run(input);
+
             } else {
 
                 Type query = TypeUtil.getTypeArgument(this.getClass());
                 Class<Q> cc = (Class<Q>) query;
-                result = this._run(JSONUtil.toBean(input.toString(), cc));
+                result = this._run(input);
             }
 
             toolRun.onToolEnd(this.getName(), result, input, verbose);
@@ -65,10 +64,6 @@ public abstract class BaseTool<Q, R> {
 
         return result;
     }
-
-
-//    public abstract Class<?> getInputCls();
-
 
     /**
      * 把类上的第一个范型转换为 JsonSchema

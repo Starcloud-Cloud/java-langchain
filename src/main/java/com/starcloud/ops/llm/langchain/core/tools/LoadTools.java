@@ -17,9 +17,7 @@ import java.util.Optional;
 public class LoadTools {
 
 
-    private final static List<Class<? extends BaseTool>> BASE_TOOLS = Arrays.asList(RequestsGetTool.class, CalculatorTool.class);
-
-    private final static List<Class<? extends BaseTool>> LLM_TOOLS = Arrays.asList(RequestsGetTool.class);
+    private final static List<Class<? extends BaseTool>> LLM_TOOLS = Arrays.asList(RequestsGetTool.class, CalculatorTool.class);
 
     private final static List<Class<? extends BaseTool>> EXTRA_LLM_TOOLS = Arrays.asList(RequestsGetTool.class);
 
@@ -41,10 +39,7 @@ public class LoadTools {
 
             BaseTool tool;
 
-            if (BASE_TOOLS.contains(toolCls)) {
-
-                tool = toolCls.getDeclaredConstructor().newInstance();
-            } else if (LLM_TOOLS.contains(toolCls)) {
+            if (LLM_TOOLS.contains(toolCls)) {
 
                 Assert.notNull(llm, "Tool {} requires an LLM to be provided", toolCls.getSimpleName());
 

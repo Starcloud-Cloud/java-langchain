@@ -1,6 +1,7 @@
 package com.starcloud.ops.llm.langchain.core.schema;
 
 import com.knuddels.jtokkit.api.EncodingType;
+import com.knuddels.jtokkit.api.ModelType;
 
 import java.util.Arrays;
 import java.util.Map;

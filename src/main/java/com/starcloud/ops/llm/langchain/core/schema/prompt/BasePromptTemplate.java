@@ -1,6 +1,5 @@
 package com.starcloud.ops.llm.langchain.core.schema.prompt;
 
-
 import com.starcloud.ops.llm.langchain.core.prompt.base.PromptValue;
 import com.starcloud.ops.llm.langchain.core.prompt.base.variable.BaseVariable;
 import lombok.Data;
@@ -15,7 +14,7 @@ import java.util.*;
 @Data
 public abstract class BasePromptTemplate implements Serializable {
 
-    private List<BaseVariable> inputVariables;
+    private List<BaseVariable> inputVariables = new ArrayList<>();
 
     private Object outputParser;
 
@@ -32,6 +31,25 @@ public abstract class BasePromptTemplate implements Serializable {
 
     }
 
+    public PromptValue formatPrompt() {
 
+        return formatPrompt(this.inputVariables);
+    }
+
+
+    /**
+     * 合并当前模版变量
+     * @param variables
+     * @return
+     */
+    public List<BaseVariable> mergeVariable(List<BaseVariable> variables) {
+
+        List<BaseVariable> listVariable = new ArrayList<>();
+
+        listVariable.addAll(this.getInputVariables());
+        listVariable.addAll(variables);
+
+        return listVariable;
+    }
 }
 

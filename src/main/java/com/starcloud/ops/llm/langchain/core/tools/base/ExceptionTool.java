@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 
 @Data
-public class ExceptionTool extends BaseTool<String, String> {
+public class ExceptionTool extends BaseTool<String> {
 
     private String name = "_Exception";
 
@@ -13,8 +13,8 @@ public class ExceptionTool extends BaseTool<String, String> {
 
 
     @Override
-    protected String _run(String input) {
-        return input.toString();
+    protected ToolResponse _run(String input) {
+        return ToolResponse.buildObservation(input.toString());
     }
 
 

@@ -24,6 +24,7 @@
     </properties>
 
     <repositories>
+
         <repository>
             <id>jitpack</id>
             <url>https://jitpack.io</url>
@@ -125,6 +126,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.13.5</version>
             <scope>provided</scope> <!-- 设置为 provided，只有工具类需要使用到 -->
         </dependency>
 

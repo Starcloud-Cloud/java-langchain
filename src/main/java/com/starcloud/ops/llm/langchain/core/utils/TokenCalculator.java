@@ -1,6 +1,5 @@
 package com.starcloud.ops.llm.langchain.core.utils;
 
-import com.knuddels.jtokkit.api.ModelType;
 import com.starcloud.ops.llm.langchain.core.schema.ModelTypeEnum;
 
 import java.math.BigDecimal;

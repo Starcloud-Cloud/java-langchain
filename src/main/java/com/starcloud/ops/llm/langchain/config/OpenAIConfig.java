@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 
 @Data
 @Configuration
@@ -18,22 +20,11 @@ public class OpenAIConfig {
 
     private Long timeOut;
 
-    private String proxyHost;
+    private List<String> proxyHosts;
 
     private int proxyPort;
 
     private Boolean azure;
 
     private String azureKey;
-
-//
-//
-//    public void setApiKey(String apiKey) {
-//        OpenAIConfig.apiKey = apiKey;
-//    }
-//
-//    public void setTimeOut(Long timeOut) {
-//        OpenAIConfig.timeOut = timeOut;
-//    }
-
 }

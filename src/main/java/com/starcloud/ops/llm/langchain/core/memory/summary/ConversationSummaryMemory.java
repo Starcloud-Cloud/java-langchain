@@ -6,6 +6,7 @@ import com.starcloud.ops.llm.langchain.core.model.llm.base.BaseLLM;
 import com.starcloud.ops.llm.langchain.core.model.llm.base.BaseLLMResult;
 import com.starcloud.ops.llm.langchain.core.model.llm.base.BaseOpenAI;
 import com.starcloud.ops.llm.langchain.core.prompt.base.variable.BaseVariable;
+import com.starcloud.ops.llm.langchain.core.schema.BaseLanguageModel;
 import com.starcloud.ops.llm.langchain.core.schema.message.BaseMessage;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,11 +25,7 @@ public class ConversationSummaryMemory extends SummarizerMixin {
 
     private String buffer;
 
-    public ConversationSummaryMemory() {
-        super();
-    }
-
-    public ConversationSummaryMemory(BaseLLM llm) {
+    public ConversationSummaryMemory(BaseLanguageModel llm) {
         super(llm);
     }
 

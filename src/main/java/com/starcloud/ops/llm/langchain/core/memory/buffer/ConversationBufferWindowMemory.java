@@ -32,11 +32,19 @@ public class ConversationBufferWindowMemory extends BaseChatMemory {
     public List<BaseVariable> loadMemoryVariables() {
 
         List<BaseMessage> messages = getChatHistory().getMessages();
-        messages = Optional.ofNullable(messages).orElse(new ArrayList<>()).stream().skip(CollectionUtil.size(messages) - this.k * 2).collect(Collectors.toList());
-        return Arrays.asList(BaseVariable.builder()
-                .field(MEMORY_KEY)
-                .value(BaseMessage.getBufferString(messages))
-                .build());
+        if (CollectionUtil.size(messages) > 0) {
+            messages = Optional.ofNullable(messages).orElse(new ArrayList<>()).stream().skip(CollectionUtil.size(messages) - this.k).collect(Collectors.toList());
+            return Arrays.asList(BaseVariable.builder()
+                    .field(MEMORY_KEY)
+                    .value(BaseMessage.getBufferString(messages))
+                    .build());
+        } else {
+
+            return Arrays.asList(BaseVariable.builder()
+                    .field(MEMORY_KEY).value("")
+                    .build());
+        }
+
     }
 
 

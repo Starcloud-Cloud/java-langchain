@@ -28,4 +28,9 @@ public class ConversationBufferMemory extends BaseChatMemory {
     }
 
 
+    public String getBuffer() {
+        return BaseMessage.getBufferString(this.getChatHistory().getMessages());
+    }
+
+
 }

@@ -85,7 +85,7 @@ public class OpenAIFunctionsAgent extends BaseSingleActionAgent {
 
         PromptValue promptValue = this.promptTemplate.formatPrompt(selectedInputs);
 
-        List<BaseMessage> messages = promptValue.toMessage();
+        List<? extends BaseMessage> messages = promptValue.toMessage();
 
         BaseMessage predictedMessage = this.llm.predictMessages(messages, null, this.getFunctions(), callbackManager);
 

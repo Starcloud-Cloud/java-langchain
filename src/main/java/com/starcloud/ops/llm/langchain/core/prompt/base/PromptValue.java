@@ -8,6 +8,6 @@ public abstract class PromptValue {
 
     public abstract String toStr();
 
-    public abstract List<BaseMessage> toMessage();
+    public abstract List<? extends BaseMessage> toMessage();
 
 }

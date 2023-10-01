@@ -40,7 +40,5 @@ public class ChatMessageHistory {
         } else {
             return Optional.ofNullable(this.messages).orElse(new ArrayList<>()).stream().skip(CollectionUtil.size(this.messages) + limit).collect(Collectors.toList());
         }
-
     }
-
 }

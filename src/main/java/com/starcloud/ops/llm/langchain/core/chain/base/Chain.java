@@ -35,6 +35,35 @@ public abstract class Chain<R> {
 
     private Boolean verbose = false;
 
+    /**
+     * 输入的字段
+     */
+    private List<String> inputKeys;
+
+    /**
+     * 输出的字段
+     */
+    private List<String> outputKeys;
+
+
+    public List<String> getInputKeys() {
+        return this.inputKeys;
+    }
+
+
+    public List<String> getOutputKeys() {
+        return this.outputKeys;
+    }
+
+    /**
+     * 当Chain输出为Map时定义的key
+     *
+     * @return
+     */
+    public String getReturnOutputKey() {
+        return this.getOutputKeys().get(0);
+    }
+
     public Boolean getVerbose() {
         return verbose;
     }
@@ -46,6 +75,7 @@ public abstract class Chain<R> {
     }
 
     protected abstract R _call(List<BaseVariable> baseVariables);
+
 
     public void _validateInputs(List<BaseVariable> baseVariables) {
 
@@ -68,7 +98,6 @@ public abstract class Chain<R> {
 
         return baseVariables;
     }
-
 
     public R call(List<BaseVariable> baseVariables) {
 

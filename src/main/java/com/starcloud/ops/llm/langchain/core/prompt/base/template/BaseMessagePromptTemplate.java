@@ -27,7 +27,7 @@ public abstract class BaseMessagePromptTemplate implements Serializable {
 
     //public abstract PromptValue formatPrompt(List<BaseVariable> variables);
 
-    public abstract List<BaseMessage> formatMessages(List<BaseVariable> variables);
+    public abstract List<? extends BaseMessage> formatMessages(List<BaseVariable> variables);
 
 
 //

@@ -6,6 +6,7 @@ import com.starcloud.ops.llm.langchain.core.memory.buffer.ConversationBufferMemo
 import com.starcloud.ops.llm.langchain.core.model.llm.base.BaseLLM;
 import com.starcloud.ops.llm.langchain.core.prompt.base.template.PromptTemplate;
 import com.starcloud.ops.llm.langchain.core.prompt.base.variable.BaseVariable;
+import com.starcloud.ops.llm.langchain.core.schema.BaseLanguageModel;
 import com.starcloud.ops.llm.langchain.core.schema.prompt.BasePromptTemplate;
 import lombok.EqualsAndHashCode;
 
@@ -28,12 +29,12 @@ public class ConversationChain<R> extends LLMChain<R> {
     public static BasePromptTemplate basePromptTemplate = new PromptTemplate(DEFAULT_TEMPLATE, Arrays.asList(BaseVariable.newString("history"), BaseVariable.newString("input")));
 
 
-    public ConversationChain(BaseLLM<R> llm) {
+    public ConversationChain(BaseLanguageModel<R> llm) {
         super(llm, basePromptTemplate);
         this.setMemory(new ConversationBufferMemory());
     }
 
-    public ConversationChain(BaseLLM<R> llm, BaseMemory baseMemory) {
+    public ConversationChain(BaseLanguageModel<R> llm, BaseMemory baseMemory) {
         super(llm, basePromptTemplate);
         this.setMemory(Optional.ofNullable(baseMemory).orElse(null));
     }

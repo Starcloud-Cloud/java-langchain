@@ -5,6 +5,7 @@ import com.starcloud.ops.llm.langchain.core.model.chat.base.message.BaseChatMess
 import com.starcloud.ops.llm.langchain.core.model.llm.base.BaseLLMResult;
 import com.starcloud.ops.llm.langchain.core.model.llm.base.BaseOpenAI;
 import com.starcloud.ops.llm.langchain.core.prompt.base.variable.BaseVariable;
+import com.starcloud.ops.llm.langchain.core.schema.BaseLanguageModel;
 import com.starcloud.ops.llm.langchain.core.schema.message.BaseMessage;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,9 +23,9 @@ public class ConversationTokenBufferMemory extends BaseChatMemory {
 
     private Integer maxTokenLimit = 2000;
 
-    private BaseOpenAI llm;
+    private BaseLanguageModel llm;
 
-    public ConversationTokenBufferMemory(BaseOpenAI llm, Integer maxTokenLimit) {
+    public ConversationTokenBufferMemory(BaseLanguageModel llm, Integer maxTokenLimit) {
         this.maxTokenLimit = maxTokenLimit;
         this.llm = llm;
     }

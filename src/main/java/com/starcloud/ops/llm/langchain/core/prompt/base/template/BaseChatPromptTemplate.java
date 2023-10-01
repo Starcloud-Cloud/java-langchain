@@ -13,7 +13,7 @@ import java.util.Map;
 
 public abstract class BaseChatPromptTemplate extends BasePromptTemplate {
 
-    protected abstract List<BaseMessage> formatMessage(List<BaseVariable> variables);
+    protected abstract List<? extends BaseMessage> formatMessage(List<BaseVariable> variables);
 
     @Override
     public String format(List<BaseVariable> variables) {
@@ -24,7 +24,7 @@ public abstract class BaseChatPromptTemplate extends BasePromptTemplate {
     @Override
     public ChatPromptValue formatPrompt(List<BaseVariable> variables) {
 
-        List<BaseMessage> messages = this.formatMessage(variables);
+        List<? extends BaseMessage> messages = this.formatMessage(variables);
 
         return new ChatPromptValue(messages);
     }

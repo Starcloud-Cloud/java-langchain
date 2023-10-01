@@ -1,6 +1,6 @@
-package com.starcloud.ops.llm.langchain.llm;
+package com.starcloud.ops.llm.langchain.core.llm;
 
-import com.starcloud.ops.llm.langchain.SpringBootTests;
+import com.starcloud.ops.llm.langchain.core.SpringBootTests;
 import com.starcloud.ops.llm.langchain.core.chain.conversation.ConversationChain;
 import com.starcloud.ops.llm.langchain.core.memory.buffer.ConversationBufferWindowMemory;
 import com.starcloud.ops.llm.langchain.core.memory.buffer.ConversationTokenBufferMemory;
@@ -33,9 +33,6 @@ public class OpenAITest extends SpringBootTests {
         log.info("result : {}", llm.call("Hi there! what you name?"));
 
     }
-
-
-
 
     @Test
     public void ConversationChainTest() {

@@ -19,7 +19,7 @@ public class SystemMessagePromptTemplate extends BaseStringMessagePromptTemplate
         super(promptTemplate);
     }
 
-    public static BaseMessagePromptTemplate fromTemplate(String... params) {
+    public static SystemMessagePromptTemplate fromTemplate(String... params) {
 
         StringPromptTemplate promptTemplate = PromptTemplate.fromTemplate( params);
         return new SystemMessagePromptTemplate(promptTemplate);

@@ -31,6 +31,11 @@ public class LLMChain<R> extends Chain<BaseLLMResult<R>> {
         this.setPromptTemplate(promptTemplate);
     }
 
+    public LLMChain(BaseLanguageModel<R> llm, BasePromptTemplate promptTemplate, String outputKey) {
+        this.setLlm(llm);
+        this.setPromptTemplate(promptTemplate);
+        this.setOutputKeys(Arrays.asList(outputKey));
+    }
 
     @Override
     protected BaseLLMResult<R> _call(List<BaseVariable> baseVariables) {
@@ -50,7 +55,7 @@ public class LLMChain<R> extends Chain<BaseLLMResult<R>> {
     @Override
     public String run(String text) {
 
-        return this.call(Arrays.asList(BaseVariable.newString(text))).getText();
+        return this.call(Arrays.asList(BaseVariable.newString("input", text))).getText();
     }
 //
 //    protected BaseLLMResult<R> _call(List<BaseVariable> baseVariables, CallbackManagerForChainRun chainRun) {

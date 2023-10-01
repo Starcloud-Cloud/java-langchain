@@ -10,6 +10,7 @@ import com.starcloud.ops.llm.langchain.core.utils.TokenUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.Serializable;
 import java.util.*;
 
 
@@ -24,7 +25,7 @@ public abstract class BaseLanguageModel<R> {
     }
 
 
-    public Long getNumTokensFromMessages(List<BaseMessage> messages) {
+    public Long getNumTokensFromMessages(List<? extends BaseMessage> messages) {
         return Optional.ofNullable(messages).orElse(new ArrayList<>()).stream().map((message) -> this.getNumTokens(message.getContent())).reduce(0L, Long::sum);
     }
 

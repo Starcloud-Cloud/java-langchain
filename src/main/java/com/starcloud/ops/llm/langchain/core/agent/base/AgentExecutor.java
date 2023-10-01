@@ -53,6 +53,8 @@ public class AgentExecutor extends Chain<Map<String, Object>> {
         this.tools = tools;
         this.callbackManager = callbackManager;
         this.tags = tags;
+        this.setInputKeys(Arrays.asList("input"));
+        this.setOutputKeys(Arrays.asList("output"));
     }
 
     public static AgentExecutor fromAgentAndTools(List<BaseTool> tools, BaseLanguageModel llm, BaseSingleActionAgent agent, BaseCallbackManager callbackManager) {
@@ -136,7 +138,7 @@ public class AgentExecutor extends Chain<Map<String, Object>> {
         this._validateOutputs(result);
 
         if (this.getMemory() != null) {
-            this.getMemory().saveContext(baseVariables, BaseLLMResult.builder().text((String) result.getOrDefault("output", "")).build());
+            this.getMemory().saveContext(baseVariables, BaseLLMResult.builder().text((String) result.getOrDefault(this.getReturnOutputKey(), "")).build());
         }
         return result;
     }
@@ -145,7 +147,7 @@ public class AgentExecutor extends Chain<Map<String, Object>> {
     @Override
     public String run(String text) {
 
-        return this.run(Arrays.asList(BaseVariable.newString("input", text)));
+        return this.run(Arrays.asList(BaseVariable.newString(this.getInputKeys().get(0), text)));
     }
 
 

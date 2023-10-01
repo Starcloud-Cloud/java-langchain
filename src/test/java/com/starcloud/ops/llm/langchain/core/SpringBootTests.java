@@ -1,5 +1,6 @@
-package com.starcloud.ops.llm.langchain;
+package com.starcloud.ops.llm.langchain.core;
 
+import com.starcloud.ops.llm.langchain.LangChainConfiguration;
 import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;

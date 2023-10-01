@@ -1,6 +1,6 @@
-package com.starcloud.ops.llm.langchain.llm;
+package com.starcloud.ops.llm.langchain.core.llm;
 
-import com.starcloud.ops.llm.langchain.SpringBootTests;
+import com.starcloud.ops.llm.langchain.core.SpringBootTests;
 import com.starcloud.ops.llm.langchain.core.chain.LLMChain;
 import com.starcloud.ops.llm.langchain.core.model.chat.ChatOpenAI;
 

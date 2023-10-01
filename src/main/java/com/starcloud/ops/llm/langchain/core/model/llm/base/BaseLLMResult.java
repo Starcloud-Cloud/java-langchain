@@ -1,13 +1,16 @@
 package com.starcloud.ops.llm.langchain.core.model.llm.base;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author df007df
@@ -28,7 +31,7 @@ public class BaseLLMResult<R> {
 
 
     public String getText() {
-        return StrUtil.isNotBlank(this.text) ? this.text : generations.get(0).getText();
+        return StrUtil.isNotBlank(this.text) ? this.text : Optional.ofNullable(generations).orElse(new ArrayList<>()).stream().sorted().findFirst().map(BaseGeneration::getText).orElse("");
     }
 
     public static <R> BaseLLMResult<R> data(String str) {

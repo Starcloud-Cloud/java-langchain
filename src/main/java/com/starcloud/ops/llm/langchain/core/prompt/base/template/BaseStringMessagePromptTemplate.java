@@ -33,7 +33,7 @@ public abstract class BaseStringMessagePromptTemplate extends BaseMessagePromptT
     public abstract BaseMessage format(List<BaseVariable> variables);
 
     @Override
-    public List<BaseMessage> formatMessages(List<BaseVariable> variables) {
+    public List<? extends BaseMessage> formatMessages(List<BaseVariable> variables) {
         return Arrays.asList(this.format(variables));
     }
 

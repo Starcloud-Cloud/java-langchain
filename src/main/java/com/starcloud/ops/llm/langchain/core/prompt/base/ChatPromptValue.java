@@ -13,9 +13,9 @@ import java.util.List;
 public class ChatPromptValue extends PromptValue {
 
 
-    private List<BaseMessage> messages;
+    private List<? extends BaseMessage> messages;
 
-    public ChatPromptValue(List<BaseMessage> messages) {
+    public ChatPromptValue(List<? extends BaseMessage> messages) {
         this.messages = messages;
     }
 
@@ -25,7 +25,7 @@ public class ChatPromptValue extends PromptValue {
     }
 
     @Override
-    public List<BaseMessage> toMessage() {
+    public List<? extends BaseMessage> toMessage() {
         return this.messages;
     }
 }

@@ -2,13 +2,11 @@ package com.starcloud.ops.llm.langchain.core.model.chat;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.starcloud.ops.llm.langchain.config.OpenAIConfig;
 import com.starcloud.ops.llm.langchain.core.callbacks.CallbackManagerForLLMRun;
 import com.starcloud.ops.llm.langchain.core.model.chat.base.BaseChatModel;
-import com.starcloud.ops.llm.langchain.core.model.chat.base.message.BaseChatMessage;
 import com.starcloud.ops.llm.langchain.core.model.llm.azure.AuthenticationInterceptor;
 import com.starcloud.ops.llm.langchain.core.model.llm.azure.AzureAiApi;
 import com.starcloud.ops.llm.langchain.core.model.llm.base.BaseLLMUsage;
@@ -76,13 +74,13 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
 
 
     @Override
-    public ChatResult<ChatCompletionResult> _generate(List<BaseMessage> messages, List<String> tops, List<FunctionDescription> functions, CallbackManagerForLLMRun callbackManagerForLLMRun) {
+    public ChatResult<ChatCompletionResult> _generate(List<? extends BaseMessage> messages, List<String> tops, List<FunctionDescription> functions, CallbackManagerForLLMRun callbackManagerForLLMRun) {
 
         OpenAIConfig openAIConfig = SpringUtil.getBean(OpenAIConfig.class);
 
         OpenAiService openAiService;
 
-        if (StrUtil.isNotBlank(openAIConfig.getProxyHost())) {
+        if (CollectionUtil.isNotEmpty(openAIConfig.getProxyHosts())) {
             openAiService = addProxy(openAIConfig);
         } else if (Boolean.TRUE.equals(openAIConfig.getAzure())) {
             openAiService = azureAiService(openAIConfig);
@@ -224,8 +222,10 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
 
                     @Override
                     public List<Proxy> select(URI uri) {
-                        List<Proxy> result = new ArrayList<>();
-                        result.add(new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(openAIConfig.getProxyHost(), openAIConfig.getProxyPort())));
+                        List<Proxy> result = Optional.ofNullable(openAIConfig.getProxyHosts()).orElse(new ArrayList<>()).stream().map(host -> {
+                            return new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(host, openAIConfig.getProxyPort()));
+                        }).collect(Collectors.toList());
+
                         return result;
                     }
 

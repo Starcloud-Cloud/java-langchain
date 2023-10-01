@@ -4,9 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Builder
 @NoArgsConstructor
@@ -66,6 +69,10 @@ public class BaseVariable {
                 variable.getValue(),
                 variable.getOptions()
         );
+    }
+
+    public static List<BaseVariable> copy(List<BaseVariable> variables) {
+        return Optional.ofNullable(variables).orElse(new ArrayList<>()).stream().map(BaseVariable::copy).collect(Collectors.toList());
     }
 
     /**

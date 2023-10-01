@@ -17,7 +17,7 @@ public class HumanMessagePromptTemplate extends BaseStringMessagePromptTemplate 
         super(promptTemplate);
     }
 
-    public static BaseMessagePromptTemplate fromTemplate(String... params) {
+    public static HumanMessagePromptTemplate fromTemplate(String... params) {
 
         StringPromptTemplate promptTemplate = PromptTemplate.fromTemplate(params);
         return new HumanMessagePromptTemplate(promptTemplate);

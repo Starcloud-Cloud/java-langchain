@@ -51,8 +51,8 @@
 从语言模型获得预测结果。LangChain的基本构建块是LLM，它接收文本并生成更多的文本。
 
 ```java
-        OpenAI llm = new OpenAI();
-        log.info("result : {}", llm.call("Hi there! what you name?"));
+OpenAI llm = new OpenAI();
+log.info("result : {}", llm.call("Hi there! what you name?"));
 ```
 现在我们可以传入文本并得到预测!
 ```shell
@@ -64,8 +64,8 @@ My name is Priya.
 聊天模型是语言模型的一种变体。虽然聊天模型在底层使用语言模型，但它们公开的接口有点不同:它们公开的不是“文本输入，文本输出”的API，而是一个以“聊天消息”为输入和输出的接口。
 
 ```java
-       ChatOpenAI chatOpenAI = new ChatOpenAI();
-       log.info("result: {}", JSONUtil.toJsonStr(chatOpenAI.predictMessages(Arrays.asList(new HumanMessage("hi, what you name?")))));
+ChatOpenAI chatOpenAI = new ChatOpenAI();
+log.info("result: {}", JSONUtil.toJsonStr(chatOpenAI.predictMessages(Arrays.asList(new HumanMessage("hi, what you name?")))));
 ```
 
 ```shell
@@ -76,8 +76,8 @@ My name is Priya.
 了解聊天模型与普通LLM的不同之处是很有用的，但如果能够将它们同等对待，通常也会很方便。LangChain还公开了一个接口，可以通过它与聊天模型进行交互，就像普通的LLM一样。你可以通过`predict`接口访问它。
 
 ```java
-      ChatOpenAI chatOpenAI = new ChatOpenAI();
-      log.info(chatOpenAI.predict("hi, what you name?"));
+ChatOpenAI chatOpenAI = new ChatOpenAI();
+log.info(chatOpenAI.predict("hi, what you name?"));
 ```
 ```shell
 Hello! I am an AI language model developed by OpenAI, so I don't have a personal name. You can call me OpenAI Assistant. How can I assist you today?
@@ -90,11 +90,11 @@ Hello! I am an AI language model developed by OpenAI, so I don't have a personal
 
 
 ```java
-        PromptTemplate promptTemplate = PromptTemplate.fromTemplate("What is a good name for a company that makes {product}?");
-        PromptValue promptValue = promptTemplate.formatPrompt(Arrays.asList(
-                BaseVariable.newString("product", "colorful socks")
-        ));
-        log.info("promptValue:{}", promptValue);
+PromptTemplate promptTemplate = PromptTemplate.fromTemplate("What is a good name for a company that makes {product}?");
+PromptValue promptValue = promptTemplate.formatPrompt(Arrays.asList(
+    BaseVariable.newString("product", "colorful socks")
+));
+log.info("promptValue:{}", promptValue);
 
 ```
 
@@ -117,19 +117,18 @@ promptValue:StringPromptValue(str=What is a good name for a company that makes c
 
 
 ```java
-        ChatOpenAI chatOpenAI = new ChatOpenAI();
+ChatOpenAI chatOpenAI = new ChatOpenAI();
 
-        //这里我们将参数temperature设置为0.0，从而减少生成答案的随机性。
-        chatOpenAI.setTemperature(0.0);
+//这里我们将参数temperature设置为0.0，从而减少生成答案的随机性。
+chatOpenAI.setTemperature(0.0);
 
+List<BaseTool> tools = LoadTools.loadTools(Arrays.asList(CalculatorTool.class), chatOpenAI);
 
-        List<BaseTool> tools = LoadTools.loadTools(Arrays.asList(CalculatorTool.class), chatOpenAI);
+OpenAIFunctionsAgent baseSingleActionAgent = OpenAIFunctionsAgent.fromLLMAndTools(chatOpenAI, tools);
 
-        OpenAIFunctionsAgent baseSingleActionAgent = OpenAIFunctionsAgent.fromLLMAndTools(chatOpenAI, tools);
+AgentExecutor agentExecutor = AgentExecutor.fromAgentAndTools(tools, chatOpenAI, baseSingleActionAgent, baseSingleActionAgent.getCallbackManager());
 
-        AgentExecutor agentExecutor = AgentExecutor.fromAgentAndTools(tools, chatOpenAI, baseSingleActionAgent, baseSingleActionAgent.getCallbackManager());
-
-        agentExecutor.run("计算300的25%");
+agentExecutor.run("计算300的25%");
 
 ```
 
@@ -146,18 +145,15 @@ promptValue:StringPromptValue(str=What is a good name for a company that makes c
 有许多内置的存储系统。其中最简单的是一个缓冲存储器，它只是将最后几个输入/输出添加到当前输入
 
 ```java
+ConversationBufferWindowMemory memory = new ConversationBufferWindowMemory(1);
 
-        ConversationBufferWindowMemory memory = new ConversationBufferWindowMemory(1);
+memory.saveContext(BaseVariable.newString("input", "你好，我叫皮皮鲁"), BaseVariable.newString("output", "你好啊，我叫鲁西西"));
 
-        memory.saveContext(BaseVariable.newString("input", "你好，我叫皮皮鲁"), BaseVariable.newString("output", "你好啊，我叫鲁西西"));
+log.info("loadMemoryVariables: {}", memory.loadMemoryVariables());
 
-        log.info("loadMemoryVariables: {}", memory.loadMemoryVariables());
+memory.saveContext(BaseVariable.newString("input", "很高兴和你成为朋友！"), BaseVariable.newString("output", "是的，让我们一起去冒险吧！"));
 
-
-        memory.saveContext(BaseVariable.newString("input", "很高兴和你成为朋友！"), BaseVariable.newString("output", "是的，让我们一起去冒险吧！"));
-
-        log.info("loadMemoryVariables: {}", memory.loadMemoryVariables());
-
+log.info("loadMemoryVariables: {}", memory.loadMemoryVariables());
 
 ```
 

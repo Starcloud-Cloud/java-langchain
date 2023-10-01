@@ -1,6 +1,5 @@
 package com.starcloud.ops.llm.langchain.core.chain;
 
-import com.starcloud.ops.llm.langchain.core.callbacks.CallbackManagerForChainRun;
 import com.starcloud.ops.llm.langchain.core.chain.base.Chain;
 import com.starcloud.ops.llm.langchain.core.model.llm.base.BaseLLMResult;
 import com.starcloud.ops.llm.langchain.core.prompt.base.PromptValue;
@@ -25,6 +24,8 @@ public class LLMChain<R> extends Chain<BaseLLMResult<R>> {
     private static final Logger logger = LoggerFactory.getLogger(LLMChain.class);
 
     private BasePromptTemplate promptTemplate;
+
+    private List<String> inputKeys = Arrays.asList("input");
 
     public LLMChain(BaseLanguageModel<R> llm, BasePromptTemplate promptTemplate) {
         this.setLlm(llm);
@@ -55,14 +56,7 @@ public class LLMChain<R> extends Chain<BaseLLMResult<R>> {
     @Override
     public String run(String text) {
 
-        return this.call(Arrays.asList(BaseVariable.newString("input", text))).getText();
+        return this.call(Arrays.asList(BaseVariable.newString(this.getInputKeys().get(0), text))).getText();
     }
-//
-//    protected BaseLLMResult<R> _call(List<BaseVariable> baseVariables, CallbackManagerForChainRun chainRun) {
-//        PromptValue promptValue = this.promptTemplate.formatPrompt(baseVariables);
-//
-//        this.getLlm().setVerbose(this.getVerbose());
-//        return this.getLlm().generatePrompt(Arrays.asList(promptValue));
-//    }
 
 }

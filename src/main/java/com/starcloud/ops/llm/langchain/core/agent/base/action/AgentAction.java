@@ -1,11 +1,8 @@
 package com.starcloud.ops.llm.langchain.core.agent.base.action;
 
-import com.starcloud.ops.llm.langchain.core.model.llm.base.BaseLLMUsage;
-import lombok.Data;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.starcloud.ops.llm.langchain.core.utils.JsonUtils;
+import lombok.Data;
 
 @Data
 public abstract class AgentAction {
@@ -20,4 +17,14 @@ public abstract class AgentAction {
     private Object observation;
 
     private Object response;
+
+    public String getObservation() {
+
+        if (this.observation instanceof Number || this.observation instanceof String) {
+            return String.valueOf(this.observation);
+        } else {
+            return JsonUtils.toJsonString(this.observation);
+        }
+
+    }
 }

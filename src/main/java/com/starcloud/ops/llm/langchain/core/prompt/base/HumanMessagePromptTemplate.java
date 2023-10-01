@@ -1,7 +1,5 @@
 package com.starcloud.ops.llm.langchain.core.prompt.base;
 
-import com.starcloud.ops.llm.langchain.core.prompt.base.StringPromptTemplate;
-import com.starcloud.ops.llm.langchain.core.prompt.base.template.BaseMessagePromptTemplate;
 import com.starcloud.ops.llm.langchain.core.prompt.base.template.BaseStringMessagePromptTemplate;
 import com.starcloud.ops.llm.langchain.core.prompt.base.template.PromptTemplate;
 import com.starcloud.ops.llm.langchain.core.prompt.base.variable.BaseVariable;

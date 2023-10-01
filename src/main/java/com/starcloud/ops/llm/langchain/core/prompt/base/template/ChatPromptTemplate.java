@@ -14,11 +14,11 @@ public class ChatPromptTemplate extends BaseChatPromptTemplate {
 
     private List<BaseMessagePromptTemplate> messagePromptTemplates;
 
-    private ChatPromptTemplate(List<BaseMessagePromptTemplate> messagePromptTemplates) {
+    protected ChatPromptTemplate(List<BaseMessagePromptTemplate> messagePromptTemplates) {
         this.messagePromptTemplates = messagePromptTemplates;
     }
 
-    private ChatPromptTemplate(List<BaseVariable> inputVariables, List<BaseMessagePromptTemplate> messagePromptTemplates) {
+    protected ChatPromptTemplate(List<BaseVariable> inputVariables, List<BaseMessagePromptTemplate> messagePromptTemplates) {
         this.messagePromptTemplates = messagePromptTemplates;
         this.inputVariables = inputVariables;
     }

@@ -19,9 +19,9 @@ public class MessagesPlaceholder extends BaseMessagePromptTemplate {
     }
 
     @Override
-    public List<? extends BaseMessage> formatMessages(List<BaseVariable> variables) {
+    public List<BaseMessage> formatMessages(List<BaseVariable> variables) {
 
-        return (List<? extends BaseMessage>) Optional.ofNullable(variables).orElse(new ArrayList<>()).stream().filter((baseVariable) -> {
+        return (List<BaseMessage>) Optional.ofNullable(variables).orElse(new ArrayList<>()).stream().filter((baseVariable) -> {
             return baseVariable.getField().equals(this.variableName);
         }).findFirst().map(BaseVariable::getValue).orElse(new ArrayList<>());
 

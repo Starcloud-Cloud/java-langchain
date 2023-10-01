@@ -90,6 +90,8 @@ public abstract class BaseLLM<R> extends BaseLanguageModel<R> {
 
                 llmRun.onLLMError(e.getMessage(), e);
 
+                log.error("BaseLLm generate is fail: {}", e.getMessage(), e);
+
             }
         }
 

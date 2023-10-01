@@ -4,6 +4,7 @@ import cn.hutool.core.util.ReflectUtil;
 import com.starcloud.ops.llm.langchain.core.prompt.base.StringPromptTemplate;
 import com.starcloud.ops.llm.langchain.core.prompt.base.variable.BaseVariable;
 import com.starcloud.ops.llm.langchain.core.schema.message.BaseMessage;
+import com.starcloud.ops.llm.langchain.core.schema.prompt.BasePromptTemplate;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,12 +34,7 @@ public abstract class BaseStringMessagePromptTemplate extends BaseMessagePromptT
     public abstract BaseMessage format(List<BaseVariable> variables);
 
     @Override
-    public List<? extends BaseMessage> formatMessages(List<BaseVariable> variables) {
+    public List<BaseMessage> formatMessages(List<BaseVariable> variables) {
         return Arrays.asList(this.format(variables));
     }
-
-    private String getCallingMethodName() {
-        return Thread.currentThread().getStackTrace()[3].getMethodName();
-    }
-
 }

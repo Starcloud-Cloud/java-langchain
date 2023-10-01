@@ -3,12 +3,16 @@ package com.starcloud.ops.llm.langchain.core.prompt.base.template;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
+import com.starcloud.ops.llm.langchain.core.prompt.base.PromptValue;
 import com.starcloud.ops.llm.langchain.core.prompt.base.StringPromptTemplate;
+import com.starcloud.ops.llm.langchain.core.prompt.base.StringPromptValue;
 import com.starcloud.ops.llm.langchain.core.prompt.base.variable.BaseVariable;
 import com.starcloud.ops.llm.langchain.core.schema.message.BaseMessage;
+import com.starcloud.ops.llm.langchain.core.schema.prompt.BasePromptTemplate;
 import lombok.Data;
 
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -21,14 +25,17 @@ public class PromptTemplate extends StringPromptTemplate {
 
     private String template;
 
-    private String templateFormat = "f-string";
+    /**
+     * 动态生成模版
+     */
+    private Supplier<String> templateSupplier;
 
     public PromptTemplate(String template) {
         this.template = template;
     }
 
     public PromptTemplate(String template, List<BaseVariable> inputVariables) {
-        this.inputVariables = inputVariables;
+        this.setInputVariables(inputVariables);
         this.template = template;
     }
 
@@ -38,12 +45,29 @@ public class PromptTemplate extends StringPromptTemplate {
 
         Map<String, Object> allVariablesValues = MapUtil.newHashMap();
 
+        //合并变量
+        variables = this.mergeVariable(variables);
+
         Optional.ofNullable(variables).orElse(new ArrayList<>()).forEach(variable -> {
 
-            allVariablesValues.put(variable.getField(), variable.getValue());
+            if (BaseVariable.VariableTypeEnum.SUPPLIER.equals(variable.getType())) {
+                allVariablesValues.put(variable.getField(), ((Supplier<?>) variable.getValue()).get());
+            } else if (BaseVariable.VariableTypeEnum.TEMPLATE.equals(variable.getType())) {
+                allVariablesValues.put(variable.getField(), ((BasePromptTemplate) variable.getValue()).formatPrompt().toStr());
+            } else {
+                allVariablesValues.put(variable.getField(), variable.getValue());
+            }
+
         });
 
-        return StrUtil.format(this.template, allVariablesValues);
+        String tmp = "";
+        if (this.getTemplateSupplier() != null) {
+            tmp = this.getTemplateSupplier().get();
+        } else {
+            tmp = this.template;
+        }
+
+        return StrUtil.format(tmp, allVariablesValues, false);
     }
 
     public static PromptTemplate fromTemplate(String... params) {
@@ -57,5 +81,12 @@ public class PromptTemplate extends StringPromptTemplate {
 
     public static PromptTemplate fromTemplate(String template, List<BaseVariable> variables) {
         return new PromptTemplate(template, variables);
+    }
+
+    public static PromptTemplate fromTemplate(Supplier<String> templateSupplier, List<BaseVariable> variables) {
+
+        PromptTemplate promptTemplate = new PromptTemplate("", variables);
+        promptTemplate.setTemplateSupplier(templateSupplier);
+        return promptTemplate;
     }
 }

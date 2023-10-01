@@ -66,8 +66,8 @@ public class FunTool extends BaseTool<Object> {
     protected ToolResponse _run(Object input) {
 
         //@todo 转换入参 为 jsonSchema
-        Class<?> cc = this.getInputCls();
-        input = JSONUtil.toBean(input.toString(), cc);
+//        Class<?> cc = this.getInputCls();
+//        input = JSONUtil.toBean(input.toString(), cc);
 
         return function.apply(input);
     }

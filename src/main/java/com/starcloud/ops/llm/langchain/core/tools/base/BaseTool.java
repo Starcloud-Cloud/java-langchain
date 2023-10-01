@@ -43,13 +43,18 @@ public abstract class BaseTool<Q> {
         try {
 
             if (this instanceof FunTool) {
-                Class<Q> qq = (Class<Q>) ((FunTool) this).getInputCls();
+
+                Class<Q> cc = (Class<Q>) ((FunTool) this).getInputCls();
+                input = JSONUtil.toBean(String.valueOf(input), cc);
+
                 result = this._run(input);
 
             } else {
 
                 Type query = TypeUtil.getTypeArgument(this.getClass());
                 Class<Q> cc = (Class<Q>) query;
+                input = JSONUtil.toBean(String.valueOf(input), cc);
+
                 result = this._run(input);
             }
 

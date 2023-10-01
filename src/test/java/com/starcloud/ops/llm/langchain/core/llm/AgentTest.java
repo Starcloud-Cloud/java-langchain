@@ -6,7 +6,9 @@ import com.starcloud.ops.llm.langchain.core.SpringBootTests;
 import com.starcloud.ops.llm.langchain.config.SerpAPIToolConfig;
 import com.starcloud.ops.llm.langchain.core.agent.OpenAIFunctionsAgent;
 import com.starcloud.ops.llm.langchain.core.agent.base.AgentExecutor;
+import com.starcloud.ops.llm.langchain.core.agent.base.action.AgentFinish;
 import com.starcloud.ops.llm.langchain.core.model.chat.ChatOpenAI;
+import com.starcloud.ops.llm.langchain.core.prompt.base.variable.BaseVariable;
 import com.starcloud.ops.llm.langchain.core.schema.message.HumanMessage;
 import com.starcloud.ops.llm.langchain.core.tools.LoadTools;
 import com.starcloud.ops.llm.langchain.core.tools.RequestsGetTool;
@@ -68,7 +70,10 @@ public class AgentTest extends SpringBootTests {
 
         AgentExecutor agentExecutor = AgentExecutor.fromAgentAndTools(baseSingleActionAgent, tools, chatOpenAI.getCallbackManager());
 
-        agentExecutor.run("Who is Leo DiCaprio's girlfriend? What is her current age raised to the 0.43 power?");
+       // agentExecutor.run("Who is Leo DiCaprio's girlfriend? What is her current age raised to the 0.43 power?");
+
+        AgentFinish agentAction = agentExecutor.call(Arrays.asList(BaseVariable.newString("input", "Who is Leo DiCaprio's girlfriend? What is her current age raised to the 0.43 power?")));
+
 
         log.info("tools: {}", JSONUtil.parse(tools).toStringPretty());
 

@@ -65,6 +65,13 @@ public class OpenAIFunctionsAgent extends BaseSingleActionAgent {
     }
 
 
+    /**
+     * 自定义 BasePromptTemplate
+     * @param llm
+     * @param tools
+     * @param basePromptTemplate
+     * @return
+     */
     public static OpenAIFunctionsAgent fromLLMAndTools(BaseChatModel llm, List<BaseTool> tools, BasePromptTemplate basePromptTemplate) {
 
         Assert.isInstanceOf(ChatOpenAI.class, llm, "Only supported with ChatOpenAI models.");
@@ -77,24 +84,12 @@ public class OpenAIFunctionsAgent extends BaseSingleActionAgent {
     @Override
     public List<AgentAction> plan(List<AgentAction> intermediateSteps, List<BaseVariable> variables, BaseCallbackManager callbackManager) {
 
-        /**
-         * 历史如何构建，是否需要特殊处理，减少整体prompt，把之前的对话内容去掉？
-         * 1，保证完整性，之前内容不去掉（优先）
-         * 2，精简prompt，去掉前面的内容
-         *
-         * 读取历史时
-         * history
-         *  保存时
-         * AgentAction => BaseLLMResult => saveContext => db => history
-         */
         List<BaseMessage> chatMessages = this.formatIntermediateSteps(intermediateSteps);
 
         List<BaseVariable> selectedInputs = Optional.ofNullable(variables).orElse(new ArrayList<>()).stream().filter(baseVariable -> !baseVariable.getField().equals(TEMP_VARIABLE_SCRATCHPAD)).collect(Collectors.toList());
 
-        String historyStr = BaseMessage.getBufferString(chatMessages);
-
         //字符串 agent调用历史
-        selectedInputs.add(BaseVariable.newObject(TEMP_VARIABLE_SCRATCHPAD, historyStr));
+        selectedInputs.add(BaseVariable.newObject(TEMP_VARIABLE_SCRATCHPAD, chatMessages));
 
         PromptValue promptValue = this.promptTemplate.formatPrompt(selectedInputs);
         List<BaseMessage> messages = promptValue.toMessage();
@@ -131,7 +126,7 @@ public class OpenAIFunctionsAgent extends BaseSingleActionAgent {
         promptTemplates.addAll(extraPromptMessages);
 
         promptTemplates.add(HumanMessagePromptTemplate.fromTemplate("{input}"));
-        promptTemplates.add(new MessagesPlaceholder("agent_scratchpad"));
+        promptTemplates.add(new MessagesPlaceholder(TEMP_VARIABLE_SCRATCHPAD));
 
         return ChatPromptTemplate.fromMessages(promptTemplates);
     }

@@ -24,16 +24,10 @@ public abstract class BaseChatMemory extends BaseMemory<BaseLLMResult> {
         this.setChatHistory(new ChatMessageHistory());
     }
 
-    public BaseVariable getPromptInputKey(List<BaseVariable> baseVariables) {
-
-        return Optional.ofNullable(baseVariables).orElse(new ArrayList<>()).stream().filter(variable -> INPUT_KEY.equals(variable.getField())).findFirst().get();
-    }
-
-
     @Override
     public void saveContext(List<BaseVariable> baseVariables, BaseLLMResult result) {
 
-        BaseVariable variable = getPromptInputKey(baseVariables);
+        BaseVariable variable = BaseVariable.findVariable(baseVariables, INPUT_KEY);
         getChatHistory().addUserMessage(String.valueOf(variable.getValue()));
         getChatHistory().addAiMessage(result.getText());
     }

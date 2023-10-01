@@ -19,7 +19,6 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 @Data
 public class CalculatorTool extends BaseTool<CalculatorTool.Request> {
 
-
     private String name = "CalculatorTool";
 
     private String description = "Useful for when you need to answer questions about math.Translate a math problem into a expression that can be executed using javascript. Use the output of running this code to answer the question";
@@ -27,18 +26,13 @@ public class CalculatorTool extends BaseTool<CalculatorTool.Request> {
 
     @SneakyThrows
     @Override
-    protected ToolResponse _run(Request input) {
+    protected ToolResponse _run(CalculatorTool.Request input) {
 
         log.info("CalculatorTool: {}", input.getQuery());
         ExpressionParser parser = new SpelExpressionParser();
 
         Expression exp = parser.parseExpression(input.getQuery());
         Number result = NumberUtil.parseNumber(String.valueOf(exp.getValue()));
-
-//        ScriptEngineManager manager = new ScriptEngineManager();
-//        ScriptEngine engine = manager.getEngineByExtension("js");
-//
-//        Object result = engine.eval(input.getQuery());
 
         return ToolResponse.buildObservation(result);
     }

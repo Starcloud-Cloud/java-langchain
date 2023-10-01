@@ -28,9 +28,13 @@
 
 - [千义通问](src/test/java/com/starcloud/ops/llm/langchain/core/llm/ChatQwenAITest.java)
 
+
 ### 3.2 向量存储
 - [Mysql]()
 - [Elasticsearch]()
+
+### 3.3 智能体
+- 智能体 只使用GPT4去实现了，是现在效果的最好的方案。
 
 ## 4. 快速入门指南
 
@@ -38,13 +42,25 @@
 
 ### 4.1 Maven
 
+1. 将JitPack仓库添加到构建文件中
+```xml
+<repositories>
+    <repository>
+         <id>jitpack.io</id>
+         <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+```
+
+2. 增加依赖
 ```xml
 <dependency>
-    <groupId>xxxx</groupId>
-    <artifactId>xxxx</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <groupId>com.github.Starcloud-Cloud</groupId>
+    <artifactId>java-langchain</artifactId>
+    <version>version</version>
 </dependency>
 ```
+查看最新版本 [version](xx)
 
 
 ### 4.2 LLMs

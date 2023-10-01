@@ -123,11 +123,13 @@ public abstract class BaseChatModel<R> extends BaseLanguageModel<R> {
             }
         }
 
-        log.debug("BaseChatModel.generate result: {}", chatResults);
+        ChatResult<R> chatResult = this.combineLLMOutputs(chatResults);
+
+        log.debug("BaseChatModel.generate result: {}", chatResult.getText());
 
 //        this.getCallbackManager().onChatModelEnd(this.getClass(), chatResults);
 
-        return this.combineLLMOutputs(chatResults);
+        return chatResult;
     }
 
 

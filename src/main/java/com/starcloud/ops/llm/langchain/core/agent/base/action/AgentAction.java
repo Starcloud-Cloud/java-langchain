@@ -25,6 +25,5 @@ public abstract class AgentAction {
         } else {
             return JsonUtils.toJsonString(this.observation);
         }
-
     }
 }

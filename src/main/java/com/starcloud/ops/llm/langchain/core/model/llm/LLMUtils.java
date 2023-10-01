@@ -21,4 +21,16 @@ public class LLMUtils {
     }
 
 
+    public static BaseLLMUsage sumBaseLLMUsage(List<BaseLLMUsage> baseLLMUsageList) {
+        BaseLLMUsage baseLLMUsage = BaseLLMUsage.builder().build();
+
+        for (BaseLLMUsage llmUsage : baseLLMUsageList) {
+            baseLLMUsage.setPromptTokens(baseLLMUsage.getPromptTokens() + llmUsage.getPromptTokens());
+            baseLLMUsage.setCompletionTokens(baseLLMUsage.getCompletionTokens() + llmUsage.getCompletionTokens());
+            baseLLMUsage.setTotalTokens(baseLLMUsage.getTotalTokens() + llmUsage.getTotalTokens());
+        }
+
+        return baseLLMUsage;
+    }
+
 }

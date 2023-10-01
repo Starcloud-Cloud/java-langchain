@@ -40,9 +40,6 @@ public abstract class BaseLanguageModel<R> {
 
     public abstract BaseMessage predictMessages(List<BaseMessage> baseMessages);
 
-    @Deprecated
-    public abstract BaseMessage predictMessages(List<BaseMessage> baseMessages, List<String> stops);
-
     public abstract BaseMessage predictMessages(List<BaseMessage> baseMessages, List<String> stops, List<FunctionDescription> functionDescriptions, BaseCallbackManager callbackManager);
 
 }

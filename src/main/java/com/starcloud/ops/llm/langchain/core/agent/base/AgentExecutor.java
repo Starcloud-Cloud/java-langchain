@@ -163,9 +163,9 @@ public class AgentExecutor extends Chain<AgentFinish> {
     @Override
     public String run(List<BaseVariable> baseVariables) {
 
-        AgentAction response = this.call(baseVariables);
+        AgentFinish response = this.call(baseVariables);
         if (response != null) {
-            return response.getObservation();
+            return String.valueOf(response.getOutput());
         }
         return "";
     }

@@ -84,6 +84,16 @@ public class OpenAIFunctionsAgent extends BaseSingleActionAgent {
     @Override
     public List<AgentAction> plan(List<AgentAction> intermediateSteps, List<BaseVariable> variables, BaseCallbackManager callbackManager) {
 
+        /**
+         * 历史如何构建，是否需要特殊处理，减少整体prompt，把之前的对话内容去掉？
+         * 1，保证完整性，之前内容不去掉（优先）
+         * 2，精简prompt，去掉前面的内容
+         *
+         * 读取历史时
+         * history
+         *  保存时
+         * AgentAction => BaseLLMResult => saveContext => db => history
+         */
         List<BaseMessage> chatMessages = this.formatIntermediateSteps(intermediateSteps);
 
         List<BaseVariable> selectedInputs = Optional.ofNullable(variables).orElse(new ArrayList<>()).stream().filter(baseVariable -> !baseVariable.getField().equals(TEMP_VARIABLE_SCRATCHPAD)).collect(Collectors.toList());

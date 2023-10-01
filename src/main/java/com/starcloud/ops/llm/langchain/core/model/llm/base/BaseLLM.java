@@ -92,6 +92,8 @@ public abstract class BaseLLM<R> extends BaseLanguageModel<R> {
 
                 log.error("BaseLLm generate is fail: {}", e.getMessage(), e);
 
+                throw e;
+
             }
         }
 
@@ -107,14 +109,8 @@ public abstract class BaseLLM<R> extends BaseLanguageModel<R> {
 
     @Override
     public BaseMessage predictMessages(List<BaseMessage> baseMessages) {
-        return this.predictMessages(baseMessages, null);
+        return this.predictMessages(baseMessages, null, null, null);
     }
-
-    @Override
-    public BaseMessage predictMessages(List<BaseMessage> baseMessages, List<String> stops) {
-        return this.predictMessages(baseMessages, stops, null, null);
-    }
-
 
     @Override
     public BaseMessage predictMessages(List<BaseMessage> baseMessages, List<String> stops, List<FunctionDescription> functionDescriptions, BaseCallbackManager callbackManager) {

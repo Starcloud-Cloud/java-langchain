@@ -2,16 +2,20 @@ package com.starcloud.ops.llm.langchain.core.model.chat;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.knuddels.jtokkit.api.ModelType;
 import com.starcloud.ops.llm.langchain.config.OpenAIConfig;
 import com.starcloud.ops.llm.langchain.core.callbacks.CallbackManagerForLLMRun;
 import com.starcloud.ops.llm.langchain.core.model.chat.base.BaseChatModel;
+import com.starcloud.ops.llm.langchain.core.model.chat.base.message.BaseChatMessage;
 import com.starcloud.ops.llm.langchain.core.model.llm.azure.AuthenticationInterceptor;
 import com.starcloud.ops.llm.langchain.core.model.llm.azure.AzureAiApi;
 import com.starcloud.ops.llm.langchain.core.model.llm.base.BaseLLMUsage;
 import com.starcloud.ops.llm.langchain.core.model.llm.base.ChatGeneration;
 import com.starcloud.ops.llm.langchain.core.model.llm.base.ChatResult;
+import com.starcloud.ops.llm.langchain.core.schema.ModelTypeEnum;
 import com.starcloud.ops.llm.langchain.core.schema.message.*;
 import com.starcloud.ops.llm.langchain.core.schema.tool.FunctionDescription;
 import com.starcloud.ops.llm.langchain.core.utils.MessageConvert;
@@ -50,7 +54,7 @@ import java.util.stream.Collectors;
 @Data
 public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
 
-    private String model = "gpt-3.5-turbo";
+    private String model = ModelTypeEnum.GPT_3_5_TURBO.getName();
 
     private List<ChatMessage> messages;
 
@@ -72,11 +76,11 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
 
     private List<ChatFunction> functions;
 
+
     @Override
     public String getModelType() {
         return this.getModel();
     }
-
 
     @Override
     public ChatResult<ChatCompletionResult> _generate(List<BaseMessage> messages, List<String> tops, List<FunctionDescription> functions, CallbackManagerForLLMRun callbackManagerForLLMRun) {
@@ -98,6 +102,7 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
         List<ChatMessage> chatMessages = Optional.ofNullable(messages).orElse(new ArrayList<>()).stream().map(MessageConvert::BaseMessage2ChatMessage).collect(Collectors.toList());
 
         chatCompletionRequest.setMessages(chatMessages);
+        this.setMessages(chatMessages);
 
         if (chatCompletionRequest.getStream()) {
 
@@ -108,8 +113,6 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
             chatResult.setUsage(baseLLMUsage);
 
             StringBuffer sb = new StringBuffer();
-
-            ChatOpenAI chatOpenAI = this;
 
             openAiService.streamChatCompletion(chatCompletionRequest)
                     .doOnError(e -> {
@@ -193,6 +196,7 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
 
                 }).collect(Collectors.toList());
 
+                this.setFunctions(chatFunctions);
                 chatCompletionRequest.setFunctions(chatFunctions);
             }
 
@@ -296,7 +300,7 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
 //                if (chatMessage.getFunctionCall() != null) {
 //                    return new FunctionMessage(chatMessage.getFunctionCall().getName(), chatMessage.getFunctionCall().getArguments());
 //                }
-                AIMessage aiMessage =  new AIMessage(chatMessage.getContent());
+                AIMessage aiMessage = new AIMessage(chatMessage.getContent());
                 if (chatMessage.getFunctionCall() != null) {
                     aiMessage.getAdditionalArgs().put("function_call", chatMessage.getFunctionCall());
                 }
@@ -310,4 +314,5 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
 
         }
     }
+
 }

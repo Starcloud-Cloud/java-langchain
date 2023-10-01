@@ -2,6 +2,7 @@ package com.starcloud.ops.llm.langchain.core.model.chat.base;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.starcloud.ops.llm.langchain.core.callbacks.*;
 import com.starcloud.ops.llm.langchain.core.model.llm.LLMUtils;
@@ -64,14 +65,10 @@ public abstract class BaseChatModel<R> extends BaseLanguageModel<R> {
 
     @Override
     public BaseMessage predictMessages(List<BaseMessage> baseMessages) {
-        return this.predictMessages(baseMessages, null);
-    }
-
-    @Override
-    public BaseMessage predictMessages(List<BaseMessage> baseMessages, List<String> stops) {
-        ChatResult<R> chatResult = this.generate(Arrays.asList(baseMessages), stops);
+        ChatResult<R> chatResult = this.generate(Arrays.asList(baseMessages));
         return chatResult.getChatGenerations().get(0).getChatMessage();
     }
+
 
     @Override
     public BaseMessage predictMessages(List<BaseMessage> baseMessages, List<String> stops, List<FunctionDescription> functionDescriptions, BaseCallbackManager callbackManager) {
@@ -89,7 +86,7 @@ public abstract class BaseChatModel<R> extends BaseLanguageModel<R> {
 
         List<CallbackManagerForLLMRun> llmRuns = this.getCallbackManager().onChatModelStart(this.getClass(), chatMessages);
 
-        log.debug("BaseChatModel.generate: {}", chatMessages);
+        log.debug("BaseChatModel.generate: {}, \n{}", chatMessages, functions);
 
         List<ChatResult<R>> chatResults = new ArrayList<>();
 
@@ -99,6 +96,7 @@ public abstract class BaseChatModel<R> extends BaseLanguageModel<R> {
 
             try {
 
+                long start = System.currentTimeMillis();
                 llmRun.onLLMStart(this.getClass(), chatMessages.get(i), stops, functions);
 
                 ChatResult<R> chatResult = this._generate(chatMessages.get(i), stops, functions, llmRun);
@@ -106,11 +104,21 @@ public abstract class BaseChatModel<R> extends BaseLanguageModel<R> {
 
                 llmRun.onLLMEnd(this.getClass(), chatResult.getText(), chatResult.getUsage());
 
+                long end = System.currentTimeMillis() - start;
+
+                BaseMessage baseMessage = chatResult.getChatGenerations().get(0).getChatMessage();
+                baseMessage.getAdditionalArgs().put("usage", chatResult.getUsage());
+                baseMessage.getAdditionalArgs().put("llm_elapsed", end);
+                baseMessage.getAdditionalArgs().put("fun", functions);
+                baseMessage.getAdditionalArgs().put("llm_params", BeanUtil.beanToMap(this));
+                baseMessage.getAdditionalArgs().put("llm_model", this.getModelType());
                 //llmRun.onLLMEnd();
 
             } catch (Exception e) {
 
                 llmRun.onLLMError(e.getMessage(), e);
+
+                throw e;
 
             }
         }

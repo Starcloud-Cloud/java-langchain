@@ -42,7 +42,7 @@ public class Agent extends BaseTests {
 
         AgentExecutor agentExecutor = AgentExecutor.fromAgentAndTools(baseSingleActionAgent, tools, chatOpenAI.getCallbackManager());
 
-        agentExecutor.run("计算300的25%");
+        log.info(agentExecutor.run("计算300的25%"));
 
     }
 

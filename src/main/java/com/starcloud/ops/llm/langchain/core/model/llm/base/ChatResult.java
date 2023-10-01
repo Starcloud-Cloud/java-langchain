@@ -3,8 +3,10 @@ package com.starcloud.ops.llm.langchain.core.model.llm.base;
 import cn.hutool.core.util.StrUtil;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author df007df
@@ -25,7 +27,7 @@ public class ChatResult<R> {
     private String text;
 
     public String getText() {
-        return StrUtil.isNotBlank(this.text) ? this.text : chatGenerations.get(0).getText();
+        return StrUtil.isNotBlank(this.text) ? this.text : Optional.ofNullable(chatGenerations).orElse(new ArrayList<>()).stream().findFirst().map(ChatGeneration::getText).orElse("");
     }
 
     public static <R> ChatResult<R> data(String str) {

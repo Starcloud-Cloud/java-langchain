@@ -1,6 +1,8 @@
 package com.starcloud.ops.llm.langchain.core.utils;
 
 
+import com.alibaba.dashscope.common.Message;
+import com.alibaba.dashscope.common.Role;
 import com.starcloud.ops.llm.langchain.core.model.chat.base.message.BaseChatMessage;
 import com.starcloud.ops.llm.langchain.core.schema.message.*;
 import com.theokanning.openai.completion.chat.ChatFunctionCall;
@@ -37,8 +39,10 @@ public class MessageConvert {
 
             ChatMessage chatMessage = new ChatMessage("assistant", content);
 
-            ChatFunctionCall call = (ChatFunctionCall) baseMessage.getAdditionalArgs().get("function_call");
-            chatMessage.setFunctionCall(call);
+            if (baseMessage.getAdditionalArgs().get("function_call") instanceof ChatFunctionCall) {
+                //  ChatFunctionCall call = JsonUtils.parseObject(JsonUtils.toJsonString(baseMessage.getAdditionalArgs().get("function_call")), ChatFunctionCall.class);
+                chatMessage.setFunctionCall((ChatFunctionCall) baseMessage.getAdditionalArgs().get("function_call"));
+            }
 
             return chatMessage;
 
@@ -58,6 +62,38 @@ public class MessageConvert {
     }
 
 
+    /**
+     * 千问
+     *
+     * @param baseMessage
+     * @return
+     */
+    public static Message BaseMessage2QwenMessage(BaseMessage baseMessage) {
+
+        String role = baseMessage.getType();
+        String content = baseMessage.getContent();
+        Map<String, Object> args = baseMessage.getAdditionalArgs();
+
+        if (baseMessage instanceof SystemMessage) {
+
+            return Message.builder().role(Role.SYSTEM.getValue()).content(content).build();
+
+        } else if (baseMessage instanceof AIMessage) {
+
+            return Message.builder().role(Role.ASSISTANT.getValue()).content(content).build();
+
+        } else if (baseMessage instanceof HumanMessage) {
+
+            return Message.builder().role(Role.USER.getValue()).content(content).build();
+
+        } else {
+
+            return Message.builder().role(baseMessage.getType()).content(content).build();
+        }
+
+    }
+
+
     public static BaseMessage convertToMessage(ChatMessage chatMessage) {
 
         switch (chatMessage.getRole()) {
@@ -68,7 +104,7 @@ public class MessageConvert {
 //                if (chatMessage.getFunctionCall() != null) {
 //                    return new FunctionMessage(chatMessage.getFunctionCall().getName(), chatMessage.getFunctionCall().getArguments());
 //                }
-                AIMessage aiMessage =  new AIMessage(chatMessage.getContent());
+                AIMessage aiMessage = new AIMessage(chatMessage.getContent());
                 aiMessage.getAdditionalArgs().put("function_call", chatMessage.getFunctionCall());
                 return aiMessage;
             case "system":

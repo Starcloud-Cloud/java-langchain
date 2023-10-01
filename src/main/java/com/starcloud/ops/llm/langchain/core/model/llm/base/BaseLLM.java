@@ -104,6 +104,11 @@ public abstract class BaseLLM<R> extends BaseLanguageModel<R> {
     }
 
     @Override
+    public BaseMessage predictMessages(List<BaseMessage> baseMessages) {
+        return this.predictMessages(baseMessages, null);
+    }
+
+    @Override
     public BaseMessage predictMessages(List<BaseMessage> baseMessages, List<String> stops) {
         return this.predictMessages(baseMessages, stops, null, null);
     }
@@ -130,7 +135,7 @@ public abstract class BaseLLM<R> extends BaseLanguageModel<R> {
 
     public String call(String text) {
         BaseLLMResult<R> baseLLMResult = this.generate(Arrays.asList(text));
-        return baseLLMResult.getGenerations().get(0).getText();
+        return baseLLMResult.getText();
     }
 
 

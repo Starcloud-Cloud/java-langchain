@@ -1,5 +1,6 @@
 package com.starcloud.ops.llm.langchain.core.llm;
 
+import cn.hutool.json.JSONUtil;
 import com.starcloud.ops.llm.langchain.core.SpringBootTests;
 import com.starcloud.ops.llm.langchain.core.chain.LLMChain;
 import com.starcloud.ops.llm.langchain.core.model.chat.ChatOpenAI;
@@ -33,9 +34,24 @@ public class ChatModelTest extends SpringBootTests {
     public void ChatOpenAICallTest() {
 
         ChatOpenAI chatOpenAI = new ChatOpenAI();
-        chatOpenAI.setVerbose(true);
 
-        chatOpenAI.call(Arrays.asList(new HumanMessage("hi, what you name?")));
+        log.info(chatOpenAI.call(Arrays.asList(new HumanMessage("hi, what you name?"))));
+    }
+
+    @Test
+    public void ChatOpenAIPredictMessagesTest() {
+
+        ChatOpenAI chatOpenAI = new ChatOpenAI();
+
+        log.info("result: {}", JSONUtil.toJsonStr(chatOpenAI.predictMessages(Arrays.asList(new HumanMessage("hi, what you name?")))));
+    }
+
+    @Test
+    public void ChatOpenAIPredictTest() {
+
+        ChatOpenAI chatOpenAI = new ChatOpenAI();
+
+        log.info(chatOpenAI.predict("hi, what you name?"));
     }
 
 

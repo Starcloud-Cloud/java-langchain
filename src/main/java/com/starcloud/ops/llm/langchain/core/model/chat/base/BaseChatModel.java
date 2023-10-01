@@ -59,19 +59,25 @@ public abstract class BaseChatModel<R> extends BaseLanguageModel<R> {
         return this.call(Arrays.asList(message), stops);
     }
 
-    protected abstract ChatResult<R> _generate(List<? extends BaseMessage> chatMessages, List<String> stops, List<FunctionDescription> functions, CallbackManagerForLLMRun callbackManager);
+    protected abstract ChatResult<R> _generate(List<BaseMessage> chatMessages, List<String> stops, List<FunctionDescription> functions, CallbackManagerForLLMRun callbackManager);
+
+
+    @Override
+    public BaseMessage predictMessages(List<BaseMessage> baseMessages) {
+        return this.predictMessages(baseMessages, null);
+    }
 
     @Override
     public BaseMessage predictMessages(List<BaseMessage> baseMessages, List<String> stops) {
-        return null;
+        ChatResult<R> chatResult = this.generate(Arrays.asList(baseMessages), stops);
+        return chatResult.getChatGenerations().get(0).getChatMessage();
     }
+
 
     @Override
     public BaseMessage predictMessages(List<BaseMessage> baseMessages, List<String> stops, BaseCallbackManager callbackManager) {
         this.setCallbackManager(callbackManager);
-        ChatResult<R> chatResult = this.generate(Arrays.asList(baseMessages), null);
-
-        return chatResult.getChatGenerations().get(0).getChatMessage();
+        return this.predictMessages(baseMessages, stops);
     }
 
     @Override
@@ -86,7 +92,7 @@ public abstract class BaseChatModel<R> extends BaseLanguageModel<R> {
         return baseMessage;
     }
 
-    public ChatResult<R> generate(List<List<? extends BaseMessage>> chatMessages, List<String> stops, List<FunctionDescription> functions) {
+    public ChatResult<R> generate(List<List<BaseMessage>> chatMessages, List<String> stops, List<FunctionDescription> functions) {
 
         List<CallbackManagerForLLMRun> llmRuns = this.getCallbackManager().onChatModelStart(this.getClass(), chatMessages);
 
@@ -128,7 +134,7 @@ public abstract class BaseChatModel<R> extends BaseLanguageModel<R> {
     public BaseLLMResult<R> generatePrompt(List<PromptValue> promptValues) {
 
         //@todo 结构不对多余的转换
-        List<List<? extends BaseMessage>> baseMessages = Optional.ofNullable(promptValues).orElse(new ArrayList<>()).stream().map((PromptValue::toMessage)).collect(Collectors.toList());
+        List<List<BaseMessage>> baseMessages = Optional.ofNullable(promptValues).orElse(new ArrayList<>()).stream().map((PromptValue::toMessage)).collect(Collectors.toList());
 
         ChatResult<R> chatResult = this.generate(baseMessages, null);
 
@@ -167,12 +173,12 @@ public abstract class BaseChatModel<R> extends BaseLanguageModel<R> {
 
     }
 
-    public ChatResult<R> generate(List<List<? extends BaseMessage>> chatMessages, List<String> stops) {
+    public ChatResult<R> generate(List<List<BaseMessage>> chatMessages, List<String> stops) {
 
         return this.generate(chatMessages, stops, null);
     }
 
-    public ChatResult<R> generate(List<List<? extends BaseMessage>> chatMessages) {
+    public ChatResult<R> generate(List<List<BaseMessage>> chatMessages) {
 
         return this.generate(chatMessages, null, null);
     }

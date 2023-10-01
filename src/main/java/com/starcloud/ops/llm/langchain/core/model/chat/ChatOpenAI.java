@@ -72,9 +72,14 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
 
     private List<ChatFunction> functions;
 
+    @Override
+    public String getModelType() {
+        return this.getModel();
+    }
+
 
     @Override
-    public ChatResult<ChatCompletionResult> _generate(List<? extends BaseMessage> messages, List<String> tops, List<FunctionDescription> functions, CallbackManagerForLLMRun callbackManagerForLLMRun) {
+    public ChatResult<ChatCompletionResult> _generate(List<BaseMessage> messages, List<String> tops, List<FunctionDescription> functions, CallbackManagerForLLMRun callbackManagerForLLMRun) {
 
         OpenAIConfig openAIConfig = SpringUtil.getBean(OpenAIConfig.class);
 
@@ -305,5 +310,4 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
 
         }
     }
-
 }

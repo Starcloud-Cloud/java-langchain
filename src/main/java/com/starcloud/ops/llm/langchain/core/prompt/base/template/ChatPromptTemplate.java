@@ -36,7 +36,7 @@ public class ChatPromptTemplate extends BaseChatPromptTemplate {
     }
 
     @Override
-    protected List<? extends BaseMessage> formatMessage(List<BaseVariable> variables) {
+    protected List<BaseMessage> formatMessage(List<BaseVariable> variables) {
 
         List<BaseMessage> messageList = new ArrayList<>();
         Optional.ofNullable(messagePromptTemplates).orElse(new ArrayList<>()).stream().forEach((promptTemplate) -> {

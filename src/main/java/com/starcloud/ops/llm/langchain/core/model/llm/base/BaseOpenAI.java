@@ -67,6 +67,12 @@ public class BaseOpenAI extends BaseLLM<CompletionResult> {
 
 
     @Override
+    public String getModelType() {
+        return this.getModel();
+    }
+
+
+    @Override
     protected BaseLLMResult<CompletionResult> _generate(List<String> texts, CallbackManagerForLLMRun callbackManager) {
 
         if (this.stream) {

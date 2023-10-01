@@ -18,6 +18,8 @@ import java.util.*;
 @Data
 public abstract class BaseLanguageModel<R> {
 
+    public abstract String getModelType();
+
     public abstract BaseLLMResult<R> generatePrompt(List<PromptValue> promptValues);
 
     public Long getNumTokens(String text) {
@@ -25,16 +27,24 @@ public abstract class BaseLanguageModel<R> {
     }
 
 
-    public Long getNumTokensFromMessages(List<? extends BaseMessage> messages) {
+    public Long getNumTokensFromMessages(List<BaseMessage> messages) {
         return Optional.ofNullable(messages).orElse(new ArrayList<>()).stream().map((message) -> this.getNumTokens(message.getContent())).reduce(0L, Long::sum);
     }
 
     public abstract void setVerbose(Boolean verbose);
 
+    public String predict(String text) {
+        return this.predict(text, null);
+    }
+
     public abstract String predict(String text, List<String> stops);
 
+    public abstract BaseMessage predictMessages(List<BaseMessage> baseMessages);
+
+    @Deprecated
     public abstract BaseMessage predictMessages(List<BaseMessage> baseMessages, List<String> stops);
 
+    @Deprecated
     public abstract BaseMessage predictMessages(List<BaseMessage> baseMessages, List<String> stops, BaseCallbackManager callbackManager);
 
     public abstract BaseMessage predictMessages(List<BaseMessage> baseMessages, List<String> stops, List<FunctionDescription> functionDescriptions, BaseCallbackManager callbackManager);

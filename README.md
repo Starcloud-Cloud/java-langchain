@@ -64,6 +64,16 @@
 
 [![](https://jitpack.io/v/Starcloud-Cloud/java-langchain.svg)](https://jitpack.io/#Starcloud-Cloud/java-langchain)
 
+### 配置
+```xml
+#OpenAI 配置
+starcloud-langchain.model.llm.openai.apiKey=sk-xxxx
+starcloud-langchain.model.llm.openai.timeOut=300
+
+#代理
+starcloud-langchain.model.llm.openai.proxyHosts[0]=xx.xxx.xx.xxx
+starcloud-langchain.model.llm.openai.proxyPort=38091
+```
 
 ### 4.2 LLMs
 从语言模型获得预测结果。LangChain的基本构建块是LLM，它接收文本并生成更多的文本。

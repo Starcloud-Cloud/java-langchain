@@ -148,7 +148,7 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
                             String resultMsg = sb.toString();
 
                             //把已经返回的内容正常记录
-                            if (chatResult.getUsage() != null && StrUtil.isNotBlank(resultMsg)) {
+                            if (chatResult.getUsage() != null && chatResult.getUsage().getTotalTokens() == 0 && StrUtil.isNotBlank(resultMsg)) {
 
                                 Long resultToke = this.getNumTokens(resultMsg);
                                 Long totalTokens = resultToke + requestToken;

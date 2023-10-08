@@ -126,16 +126,16 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
                         })
                         .doOnComplete(() -> {
 
-//                            String resultMsg = sb.toString();
-//
-//                            Long resultToke = this.getNumTokens(resultMsg);
-//                            Long totalTokens = resultToke + requestToken;
-//
-//                            //todo usage
-//                            baseLLMUsage.setCompletionTokens(resultToke).setTotalTokens(totalTokens);
-//
-//                            chatResult.setChatGenerations(Arrays.asList(ChatGeneration.<ChatCompletionResult>builder().chatMessage(new AIMessage(resultMsg)).usage(baseLLMUsage).build()));
-//                            chatResult.setUsage(baseLLMUsage);
+                            String resultMsg = sb.toString();
+
+                            Long resultToke = this.getNumTokens(resultMsg);
+                            Long totalTokens = resultToke + requestToken;
+
+                            //todo usage
+                            baseLLMUsage.setCompletionTokens(resultToke).setTotalTokens(totalTokens);
+
+                            chatResult.setChatGenerations(Arrays.asList(ChatGeneration.<ChatCompletionResult>builder().chatMessage(new AIMessage(resultMsg)).usage(baseLLMUsage).build()));
+                            chatResult.setUsage(baseLLMUsage);
 
                             //callbackManagerForLLMRun.onLLMEnd("complete", resultMsg, totalTokens);
                         })
@@ -163,8 +163,6 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
                             log.info("chatOpenAi doFinally..");
 
                             openAiService.shutdownExecutor();
-
-                            //callbackManagerForLLMRun.onLLMEnd("finally", resultMsg);
 
                         })
                         .blockingForEach(t -> {

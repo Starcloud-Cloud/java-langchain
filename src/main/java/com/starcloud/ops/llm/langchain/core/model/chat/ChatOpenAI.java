@@ -114,38 +114,25 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
 
             StringBuffer sb = new StringBuffer();
 
-            openAiService.streamChatCompletion(chatCompletionRequest)
-                    .doOnError(e -> {
+            try {
 
-                        log.error("openAiService doOnError: {}", e.getMessage(), e);
+                openAiService.streamChatCompletion(chatCompletionRequest)
+                        .onErrorReturn((e) -> {
 
-                        callbackManagerForLLMRun.onLLMError(e.getMessage(), e);
+                            log.error("openAiService onErrorReturn: {}", e.getMessage(), e);
 
-                    })
-                    .doOnComplete(() -> {
+                            return null;
+                        })
+                        .doOnError(e -> {
 
-                        String resultMsg = sb.toString();
+                            log.error("openAiService doOnError: {}", e.getMessage(), e);
 
-                        Long resultToke = this.getNumTokens(resultMsg);
-                        Long totalTokens = resultToke + requestToken;
+                            callbackManagerForLLMRun.onLLMError(e.getMessage(), e);
 
-                        //todo usage
-                        baseLLMUsage.setCompletionTokens(resultToke).setTotalTokens(totalTokens);
+                        })
+                        .doOnComplete(() -> {
 
-                        chatResult.setChatGenerations(Arrays.asList(ChatGeneration.<ChatCompletionResult>builder().chatMessage(new AIMessage(resultMsg)).usage(baseLLMUsage).build()));
-                        chatResult.setUsage(baseLLMUsage);
-
-                        //callbackManagerForLLMRun.onLLMEnd("complete", resultMsg, totalTokens);
-                    })
-                    .doOnCancel(() -> {
-
-                        log.info("chatOpenAi doOnCancel..");
-                    })
-                    .doFinally(() -> {
-
-                        String resultMsg = sb.toString();
-
-                        if (chatResult.getUsage() == null) {
+                            String resultMsg = sb.toString();
 
                             Long resultToke = this.getNumTokens(resultMsg);
                             Long totalTokens = resultToke + requestToken;
@@ -155,31 +142,60 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
 
                             chatResult.setChatGenerations(Arrays.asList(ChatGeneration.<ChatCompletionResult>builder().chatMessage(new AIMessage(resultMsg)).usage(baseLLMUsage).build()));
                             chatResult.setUsage(baseLLMUsage);
-                        }
 
-                        log.info("chatOpenAi doFinally..");
+                            //callbackManagerForLLMRun.onLLMEnd("complete", resultMsg, totalTokens);
+                        })
+                        .doOnCancel(() -> {
 
-                        openAiService.shutdownExecutor();
+                            log.info("chatOpenAi doOnCancel..");
+                        })
+                        .doFinally(() -> {
 
-                        //callbackManagerForLLMRun.onLLMEnd("finally", resultMsg);
+                            String resultMsg = sb.toString();
 
-                    })
-                    .blockingForEach(t -> {
-                        String msg = t.getChoices().get(0).getMessage().getContent();
-                        if (msg != null) {
-                            sb.append(msg);
-                            callbackManagerForLLMRun.onLLMNewToken(msg);
-                        }
-                        if ("stop".equals(t.getChoices().get(0).getFinishReason())) {
+                            //把已经返回的内容正常记录
+                            if (chatResult.getUsage() != null && chatResult.getUsage().getTotalTokens() == null) {
 
-                            String endString = "&end&";
+                                Long resultToke = this.getNumTokens(resultMsg);
+                                Long totalTokens = resultToke + requestToken;
 
-                            //callbackManagerForLLMRun.onLLMNewToken(endString);
+                                //todo usage
+                                baseLLMUsage.setCompletionTokens(resultToke).setTotalTokens(totalTokens);
 
-                            //callbackManagerForLLMRun.onLLMEnd("stop");
+                                chatResult.setChatGenerations(Arrays.asList(ChatGeneration.<ChatCompletionResult>builder().chatMessage(new AIMessage(resultMsg)).usage(baseLLMUsage).build()));
+                                chatResult.setUsage(baseLLMUsage);
+                            }
 
-                        }
-                    });
+                            log.info("chatOpenAi doFinally..");
+
+                            openAiService.shutdownExecutor();
+
+                            //callbackManagerForLLMRun.onLLMEnd("finally", resultMsg);
+
+                        })
+                        .blockingForEach(t -> {
+                            String msg = t.getChoices().get(0).getMessage().getContent();
+                            if (msg != null) {
+                                sb.append(msg);
+                                callbackManagerForLLMRun.onLLMNewToken(msg);
+                            }
+                            if ("stop".equals(t.getChoices().get(0).getFinishReason())) {
+
+                                String endString = "&end&";
+
+                                //callbackManagerForLLMRun.onLLMNewToken(endString);
+
+                                //callbackManagerForLLMRun.onLLMEnd("stop");
+
+                            }
+                        });
+
+            } catch (Exception e) {
+
+                //
+                log.error("openAiService.streamChatCompletion is fail: {}", e.getMessage(), e);
+
+            }
 
             return chatResult;
 

@@ -120,8 +120,6 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
                         .onErrorReturn((e) -> {
 
                             log.error("openAiService onErrorReturn: {}", e.getMessage(), e);
-
-                            return null;
                         })
                         .doOnError(e -> {
 

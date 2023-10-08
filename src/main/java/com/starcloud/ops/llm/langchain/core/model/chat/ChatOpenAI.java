@@ -157,9 +157,9 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
                             chatResult.setUsage(baseLLMUsage);
                         }
 
-                        //openAiService.shutdownExecutor();
-
                         log.info("chatOpenAi doFinally..");
+
+                        openAiService.shutdownExecutor();
 
                         //callbackManagerForLLMRun.onLLMEnd("finally", resultMsg);
 

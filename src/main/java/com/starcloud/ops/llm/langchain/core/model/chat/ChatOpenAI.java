@@ -137,6 +137,10 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
 
                         //callbackManagerForLLMRun.onLLMEnd("complete", resultMsg, totalTokens);
                     })
+                    .doOnCancel(() -> {
+
+                        log.info("chatOpenAi doOnCancel..");
+                    })
                     .doFinally(() -> {
 
                         String resultMsg = sb.toString();
@@ -153,7 +157,9 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
                             chatResult.setUsage(baseLLMUsage);
                         }
 
-                        openAiService.shutdownExecutor();
+                        //openAiService.shutdownExecutor();
+
+                        log.info("chatOpenAi doFinally..");
 
                         //callbackManagerForLLMRun.onLLMEnd("finally", resultMsg);
 

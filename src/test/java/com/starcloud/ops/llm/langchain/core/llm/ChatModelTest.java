@@ -12,6 +12,7 @@ import com.starcloud.ops.llm.langchain.core.prompt.base.PromptValue;
 import com.starcloud.ops.llm.langchain.core.prompt.base.SystemMessagePromptTemplate;
 import com.starcloud.ops.llm.langchain.core.prompt.base.template.*;
 import com.starcloud.ops.llm.langchain.core.callbacks.StreamingStdOutCallbackHandler;
+import com.starcloud.ops.llm.langchain.core.schema.ModelTypeEnum;
 import com.starcloud.ops.llm.langchain.core.schema.message.HumanMessage;
 import com.starcloud.ops.llm.langchain.core.schema.message.SystemMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ public class ChatModelTest extends SpringBootTests {
     public void ChatOpenAICallTest() {
 
         ChatOpenAI chatOpenAI = new ChatOpenAI();
+        chatOpenAI.setModel(ModelTypeEnum.GPT_4_TURBO.getName());
 
         log.info(chatOpenAI.call(Arrays.asList(new HumanMessage("hi, what you name?"))));
     }

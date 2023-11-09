@@ -47,6 +47,9 @@ public class TokenCalculator {
             case GPT_4_32K:
                 unitPrice = isInput ? new BigDecimal(0.06) : new BigDecimal(0.12);
                 break;
+            case GPT_4_TURBO:
+                unitPrice = isInput ? new BigDecimal(0.01) : new BigDecimal(0.03);
+                break;
             case QWEN:
                 unitPrice = isInput ? new BigDecimal(0.0016) : new BigDecimal(0.0016);
                 break;

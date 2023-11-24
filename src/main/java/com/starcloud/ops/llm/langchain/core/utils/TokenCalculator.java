@@ -39,7 +39,7 @@ public class TokenCalculator {
                 unitPrice = isInput ? new BigDecimal(0.0015) : new BigDecimal(0.002);
                 break;
             case GPT_3_5_TURBO_16K:
-                unitPrice = isInput ? new BigDecimal(0.003) : new BigDecimal(0.004);
+                unitPrice = isInput ? new BigDecimal(0.001) : new BigDecimal(0.002);
                 break;
             case GPT_4:
                 unitPrice = isInput ? new BigDecimal(0.03) : new BigDecimal(0.06);

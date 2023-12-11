@@ -81,9 +81,9 @@ starcloud.elasticsearch.uris=xxx.xxx.xxx.xxx:9200
 starcloud.elasticsearch.index.name=xxxxxx
 
 #GPT使用代理配置
-starcloud-langchain.model.llm.openai.proxyHosts[0]=3.18.215.24
-starcloud-langchain.model.llm.openai.proxyHosts[1]=18.118.101.217
-starcloud-langchain.model.llm.openai.proxyPort=38091
+starcloud-langchain.model.llm.openai.proxyHosts[0]=xxxxxx
+starcloud-langchain.model.llm.openai.proxyHosts[1]=xxxxxx
+starcloud-langchain.model.llm.openai.proxyPort=xxxxx
 
 #serpapi(google搜索) 服务的key, https://serpapi.com/playground
 starcloud-langchain.tools.serpapi.apiKey=xxxxxx

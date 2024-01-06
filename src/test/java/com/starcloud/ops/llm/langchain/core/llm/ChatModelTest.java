@@ -64,7 +64,7 @@ public class ChatModelTest extends SpringBootTests {
 
         ChatOpenAI chatOpenAI = new ChatOpenAI();
         chatOpenAI.setStream(true);
-        chatOpenAI.setVerbose(false);
+       // chatOpenAI.setVerbose(false);
         chatOpenAI.addCallbackHandler(new StreamingStdOutCallbackHandler(mockHttpServletResponse));
 
         String msg = chatOpenAI.call(Arrays.asList(new HumanMessage("hi, what you name?")), null);

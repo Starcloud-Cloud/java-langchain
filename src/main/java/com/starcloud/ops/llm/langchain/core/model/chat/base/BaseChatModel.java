@@ -49,7 +49,7 @@ public abstract class BaseChatModel<R> extends BaseLanguageModel<R> {
     @Override
     public void setVerbose(Boolean verbose) {
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-        loggerContext.getLogger(BaseChatModel.class).setLevel(Level.DEBUG);
+        loggerContext.getLogger(BaseChatModel.class.getName()).setLevel(Level.DEBUG);
         this.verbose = verbose;
     }
 

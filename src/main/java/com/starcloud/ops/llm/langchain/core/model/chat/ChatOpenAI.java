@@ -127,15 +127,15 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
                         .doOnComplete(() -> {
 
                             String resultMsg = sb.toString();
-
-                            Long resultToke = this.getNumTokens(resultMsg);
-                            Long totalTokens = resultToke + requestToken;
-
-                            //todo usage
-                            baseLLMUsage.setCompletionTokens(resultToke).setTotalTokens(totalTokens);
-
-                            chatResult.setChatGenerations(Arrays.asList(ChatGeneration.<ChatCompletionResult>builder().chatMessage(new AIMessage(resultMsg)).usage(baseLLMUsage).build()));
-                            chatResult.setUsage(baseLLMUsage);
+//
+//                            Long resultToke = this.getNumTokens(resultMsg);
+//                            Long totalTokens = resultToke + requestToken;
+//
+//                            //todo usage
+//                            baseLLMUsage.setCompletionTokens(resultToke).setTotalTokens(totalTokens);
+//
+//                            chatResult.setChatGenerations(Arrays.asList(ChatGeneration.<ChatCompletionResult>builder().chatMessage(new AIMessage(resultMsg)).usage(baseLLMUsage).build()));
+//                            chatResult.setUsage(baseLLMUsage);
 
                             //callbackManagerForLLMRun.onLLMEnd("complete", resultMsg, totalTokens);
                         })
@@ -147,18 +147,18 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
 
                             String resultMsg = sb.toString();
 
-                            //把已经返回的内容正常记录
-                            if (chatResult.getUsage() != null && chatResult.getUsage().getTotalTokens() == 0 && StrUtil.isNotBlank(resultMsg)) {
-
-                                Long resultToke = this.getNumTokens(resultMsg);
-                                Long totalTokens = resultToke + requestToken;
-
-                                //todo usage
-                                baseLLMUsage.setCompletionTokens(resultToke).setTotalTokens(totalTokens);
-
-                                chatResult.setChatGenerations(Arrays.asList(ChatGeneration.<ChatCompletionResult>builder().chatMessage(new AIMessage(resultMsg)).usage(baseLLMUsage).build()));
-                                chatResult.setUsage(baseLLMUsage);
-                            }
+//                            //把已经返回的内容正常记录
+//                            if (chatResult.getUsage() != null && chatResult.getUsage().getTotalTokens() == 0 && StrUtil.isNotBlank(resultMsg)) {
+//
+//                                Long resultToke = this.getNumTokens(resultMsg);
+//                                Long totalTokens = resultToke + requestToken;
+//
+//                                //todo usage
+//                                baseLLMUsage.setCompletionTokens(resultToke).setTotalTokens(totalTokens);
+//
+//                                chatResult.setChatGenerations(Arrays.asList(ChatGeneration.<ChatCompletionResult>builder().chatMessage(new AIMessage(resultMsg)).usage(baseLLMUsage).build()));
+//                                chatResult.setUsage(baseLLMUsage);
+//                            }
 
                             log.info("chatOpenAi doFinally..");
 
@@ -188,6 +188,17 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
                 log.error("openAiService.streamChatCompletion is fail: {}", e.getMessage(), e);
 
             }
+
+            //有时候上面的时间顺序和执行次数完全没逻辑，所以放在最后面在计算结果了（异步执行完才执行到此）
+            String resultMsg = sb.toString();
+            Long resultToke = this.getNumTokens(resultMsg);
+            Long totalTokens = resultToke + requestToken;
+
+            //todo usage
+            baseLLMUsage.setCompletionTokens(resultToke).setTotalTokens(totalTokens);
+
+            chatResult.setChatGenerations(Arrays.asList(ChatGeneration.<ChatCompletionResult>builder().chatMessage(new AIMessage(resultMsg)).usage(baseLLMUsage).build()));
+            chatResult.setUsage(baseLLMUsage);
 
             return chatResult;
 

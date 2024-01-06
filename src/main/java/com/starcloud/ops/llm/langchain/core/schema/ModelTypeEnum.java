@@ -23,7 +23,7 @@ public enum ModelTypeEnum {
     TEXT_EMBEDDING_ADA_002("text-embedding-ada-002", EncodingType.CL100K_BASE, 8191),
     TEXT_DAVINCI_003("text-davinci-003", EncodingType.P50K_BASE, 4097),
     //不知道最大Tokens多少，随便写的
-    QWEN("qwen-v1", EncodingType.CL100K_BASE, 8192);
+    QWEN("qwen-turbo", EncodingType.CL100K_BASE, 8192);
 
     private static final Map<String, ModelTypeEnum> nameToModelType = (Map) Arrays.stream(values()).collect(Collectors.toMap(ModelTypeEnum::getName, Function.identity()));
     private final String name;

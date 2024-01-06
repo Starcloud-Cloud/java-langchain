@@ -27,10 +27,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.net.*;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.theokanning.openai.service.OpenAiService.*;
@@ -195,6 +192,7 @@ public class BaseTests {
 
     /**
      * 根据给到的商品和分类列表返回问题中的分类和对应商品列表
+     *
      * @param userInput
      * @return
      */
@@ -237,6 +235,63 @@ public class BaseTests {
 
     }
 
+
+    //两个队列
+    public static void main(String[] args) {
+
+        SelfStack selfStack = new SelfStack();
+
+        System.out.println(selfStack.pop());
+        selfStack.push(1);
+        selfStack.push(2);
+        selfStack.push(3);
+        selfStack.push(6);
+        selfStack.push(9);
+
+        System.out.println(selfStack.pop());
+        System.out.println(selfStack.pop());
+
+        System.out.println("done");
+    }
+
+
+    public static class SelfStack {
+
+        private LinkedList<Integer> queue1;
+
+        private LinkedList<Integer> queue2;
+
+        public SelfStack() {
+
+            this.queue1 = new LinkedList<>();
+            this.queue2 = new LinkedList<>();
+        }
+
+        public void push(int x) {
+
+            queue2.offer(x);
+            while (!queue1.isEmpty()) {
+                queue2.offer(queue1.poll());
+            }
+
+            LinkedList<Integer> temp = queue1;
+            queue1 = queue2;
+            queue2 = temp;
+        }
+
+        public Integer pop() {
+            return this.empty() ? null : queue1.poll();
+        }
+
+        public Integer top() {
+            return queue1.peek();
+        }
+
+        public boolean empty() {
+
+            return queue1.isEmpty();
+        }
+    }
 
 
 }

@@ -66,13 +66,29 @@
 
 ### 配置
 ```xml
-#OpenAI 配置
-starcloud-langchain.model.llm.openai.apiKey=sk-xxxx
-starcloud-langchain.model.llm.openai.timeOut=300
 
-#代理
-starcloud-langchain.model.llm.openai.proxyHosts[0]=xx.xxx.xx.xxx
-starcloud-langchain.model.llm.openai.proxyPort=38091
+starcloud-langchain.model.llm.openai.apiKey=sk-xxx
+starcloud-langchain.model.llm.openai.timeOut=30
+
+#千问配置
+starcloud-langchain.model.llm.qwen.apiKey=xxxx
+
+#向量支持，使用elasticsearch
+starcloud-llm.vector.store=elasticsearch
+#elasticsearch 地址
+starcloud.elasticsearch.uris=xxx.xxx.xxx.xxx:9200
+#elasticsearch 索引
+starcloud.elasticsearch.index.name=xxxxxx
+
+#GPT使用代理配置
+starcloud-langchain.model.llm.openai.proxyHosts[0]=xxxxxx
+starcloud-langchain.model.llm.openai.proxyHosts[1]=xxxxxx
+starcloud-langchain.model.llm.openai.proxyPort=xxxxx
+
+#serpapi(google搜索) 服务的key, https://serpapi.com/playground
+starcloud-langchain.tools.serpapi.apiKey=xxxxxx
+
+
 ```
 
 ### 4.2 LLMs

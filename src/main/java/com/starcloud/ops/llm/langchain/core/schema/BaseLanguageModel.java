@@ -26,7 +26,7 @@ public abstract class BaseLanguageModel<R> {
     }
 
 
-    public Long getNumTokensFromMessages(List<BaseMessage> messages) {
+    public Long getNumTokensFromMessages(List<? extends BaseMessage> messages) {
         return Optional.ofNullable(messages).orElse(new ArrayList<>()).stream().map((message) -> this.getNumTokens(message.getContent())).reduce(0L, Long::sum);
     }
 

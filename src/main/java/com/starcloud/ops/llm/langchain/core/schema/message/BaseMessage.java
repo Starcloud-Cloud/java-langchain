@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Data
 public abstract class BaseMessage implements Serializable {
 
-    private String content = "";
+    private String content;
 
     private Map<String, Object> additionalArgs = new HashMap<>();
 

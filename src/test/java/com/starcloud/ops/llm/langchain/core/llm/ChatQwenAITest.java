@@ -6,6 +6,7 @@ import com.starcloud.ops.llm.langchain.core.chain.LLMChain;
 import com.starcloud.ops.llm.langchain.core.model.chat.ChatQwen;
 import com.starcloud.ops.llm.langchain.core.model.llm.base.BaseLLMResult;
 import com.starcloud.ops.llm.langchain.core.model.llm.qwen.Qwen;
+import com.starcloud.ops.llm.langchain.core.model.multimodal.qwen.ChatVLQwen;
 import com.starcloud.ops.llm.langchain.core.prompt.base.HumanMessagePromptTemplate;
 import com.starcloud.ops.llm.langchain.core.prompt.base.SystemMessagePromptTemplate;
 import com.starcloud.ops.llm.langchain.core.prompt.base.template.ChatPromptTemplate;
@@ -91,5 +92,16 @@ public class ChatQwenAITest extends SpringBootTests {
         log.info("chatQwen: {}", msg);
 
     }
+
+
+    @Test
+    public void chatVLTest() {
+
+        ChatVLQwen chatVLQwen = new ChatVLQwen();
+
+        log.info(chatVLQwen.call(Arrays.asList(com.starcloud.ops.llm.langchain.core.schema.message.multimodal.HumanMessage.ofTestImages("图片上画了什么？", "https://dashscope.oss-cn-beijing.aliyuncs.com/images/dog_and_girl.jpeg"))));
+
+    }
+
 
 }

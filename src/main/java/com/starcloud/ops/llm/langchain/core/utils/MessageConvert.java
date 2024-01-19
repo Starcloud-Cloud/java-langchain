@@ -5,6 +5,7 @@ import com.alibaba.dashscope.common.Message;
 import com.alibaba.dashscope.common.Role;
 import com.starcloud.ops.llm.langchain.core.model.chat.base.message.BaseChatMessage;
 import com.starcloud.ops.llm.langchain.core.schema.message.*;
+import com.starcloud.ops.llm.langchain.core.schema.message.multimodal.MultiModalMessage;
 import com.theokanning.openai.completion.chat.ChatFunctionCall;
 import com.theokanning.openai.completion.chat.ChatMessage;
 
@@ -74,6 +75,7 @@ public class MessageConvert {
         String content = baseMessage.getContent();
         Map<String, Object> args = baseMessage.getAdditionalArgs();
 
+
         if (baseMessage instanceof SystemMessage) {
 
             return Message.builder().role(Role.SYSTEM.getValue()).content(content).build();
@@ -89,6 +91,38 @@ public class MessageConvert {
         } else {
 
             return Message.builder().role(baseMessage.getType()).content(content).build();
+        }
+
+    }
+
+
+    /**
+     * 千问
+     *
+     * @param baseMessage
+     * @return
+     */
+    public static com.alibaba.dashscope.common.MultiModalMessage BaseMessage2QwenMessage(MultiModalMessage baseMessage) {
+
+        String role = baseMessage.getType();
+        String content = baseMessage.getContent();
+        List<Map<String, Object>> contents = baseMessage.getContents();
+
+        if (baseMessage instanceof com.starcloud.ops.llm.langchain.core.schema.message.multimodal.SystemMessage) {
+
+            return com.alibaba.dashscope.common.MultiModalMessage.builder().role(Role.SYSTEM.getValue()).content(contents).build();
+
+        } else if (baseMessage instanceof com.starcloud.ops.llm.langchain.core.schema.message.multimodal.AIMessage) {
+
+            return com.alibaba.dashscope.common.MultiModalMessage.builder().role(Role.ASSISTANT.getValue()).content(contents).build();
+
+        } else if (baseMessage instanceof com.starcloud.ops.llm.langchain.core.schema.message.multimodal.HumanMessage) {
+
+            return com.alibaba.dashscope.common.MultiModalMessage.builder().role(Role.USER.getValue()).content(contents).build();
+
+        } else {
+
+            return com.alibaba.dashscope.common.MultiModalMessage.builder().role(baseMessage.getType()).content(contents).build();
         }
 
     }

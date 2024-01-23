@@ -19,7 +19,7 @@ public enum ModelTypeEnum {
     GPT_4("gpt-4", EncodingType.CL100K_BASE, 8192),
     GPT_4_32K("gpt-4-32k", EncodingType.CL100K_BASE, 32768),
 
-    GPT_3_5_TURBO("gpt-3.5-turbo-1106", EncodingType.CL100K_BASE, 16385),
+    GPT_3_5_TURBO("gpt-3.5-turbo", EncodingType.CL100K_BASE, 4096),
     GPT_3_5_TURBO_16K("gpt-3.5-turbo-1106", EncodingType.CL100K_BASE, 16385),
 
     TEXT_EMBEDDING_ADA_002("text-embedding-ada-002", EncodingType.CL100K_BASE, 8191),

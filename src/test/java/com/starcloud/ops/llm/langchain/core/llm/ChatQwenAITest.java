@@ -99,7 +99,7 @@ public class ChatQwenAITest extends SpringBootTests {
 
         ChatVLQwen chatVLQwen = new ChatVLQwen();
 
-        log.info(chatVLQwen.call(Arrays.asList(com.starcloud.ops.llm.langchain.core.schema.message.multimodal.HumanMessage.ofTestImages("图片上画了什么？", "https://dashscope.oss-cn-beijing.aliyuncs.com/images/dog_and_girl.jpeg"))));
+        log.info(chatVLQwen.call(Arrays.asList(com.starcloud.ops.llm.langchain.core.schema.message.multimodal.HumanMessage.ofImages("图片上画了什么？", Arrays.asList("https://dashscope.oss-cn-beijing.aliyuncs.com/images/dog_and_girl.jpeg")))));
 
     }
 

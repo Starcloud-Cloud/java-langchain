@@ -2,10 +2,8 @@ package com.starcloud.ops.llm.langchain.core.schema.message.multimodal;
 
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 public class HumanMessage extends MultiModalMessage {
@@ -15,23 +13,19 @@ public class HumanMessage extends MultiModalMessage {
     }
 
 
-    public static HumanMessage ofTestImages(String... args) {
+    public static HumanMessage ofImages(String text, List<String> images) {
 
         List<Map<String, Object>> messages = new ArrayList<>();
 
-        for (int i = 0; i < args.length; i++) {
-            int finalI = i;
-            //第一个默认放text
-            if (finalI == 0) {
-                messages.add(new HashMap<String, Object>() {{
-                    put(MultiModalMessage.MESSAGE_TEXT_KEY, args[finalI]);
-                }});
-            } else {
-                messages.add(new HashMap<String, Object>() {{
-                    put(MultiModalMessage.MESSAGE_IMAGE_KEY, args[finalI]);
-                }});
-            }
-        }
+        messages.add(new HashMap<String, Object>() {{
+            put(MultiModalMessage.MESSAGE_TEXT_KEY, text);
+        }});
+
+        Optional.ofNullable(images).orElse(new ArrayList<>()).forEach(img -> {
+            messages.add(new HashMap<String, Object>() {{
+                put(MultiModalMessage.MESSAGE_IMAGE_KEY, img);
+            }});
+        });
 
         return new HumanMessage(messages);
     }

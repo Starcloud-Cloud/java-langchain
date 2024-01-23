@@ -24,8 +24,7 @@ public abstract class BaseMultiModalChatModel<R> extends BaseChatModel<R> {
     @Override
     public String predict(String text, List<String> stops) {
 
-        HumanMessage message = com.starcloud.ops.llm.langchain.core.schema.message.multimodal.HumanMessage.ofTestImages(text);
-        return this.call(Arrays.asList(message), stops);
+        throw new IllegalArgumentException("Plain text input is not supported for multi-modal");
     }
 
     protected abstract ChatResult<R> _generate(List<? extends BaseMessage> chatMessages, List<String> stops, CallbackManagerForLLMRun callbackManager);

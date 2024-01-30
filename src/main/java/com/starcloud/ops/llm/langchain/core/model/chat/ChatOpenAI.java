@@ -161,7 +161,7 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
 
                         log.info("chatOpenAi doFinally..");
 
-                        openAiService.shutdownExecutor();
+                        //openAiService.shutdownExecutor();
 
                     })
                     .blockingForEach(t -> {

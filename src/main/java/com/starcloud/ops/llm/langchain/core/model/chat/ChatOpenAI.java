@@ -248,11 +248,17 @@ public class ChatOpenAI extends BaseChatModel<ChatCompletionResult> {
 
                     @Override
                     public List<Proxy> select(URI uri) {
-                        List<Proxy> result = Optional.ofNullable(openAIConfig.getProxyHosts()).orElse(new ArrayList<>()).stream().map(host -> {
-                            return new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(host, openAIConfig.getProxyPort()));
-                        }).collect(Collectors.toList());
+                        List<Proxy> proxys = new ArrayList<>();
 
-                        return result;
+                        proxys.addAll(Optional.ofNullable(openAIConfig.getProxyHosts()).orElse(new ArrayList<>()).stream().map(host -> {
+                            return new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(host, openAIConfig.getProxyPort()));
+                        }).collect(Collectors.toList()));
+
+                        proxys.addAll(Optional.ofNullable(openAIConfig.getProxyHttps()).orElse(new ArrayList<>()).stream().map(host -> {
+                            return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, openAIConfig.getProxyHttpsPort()));
+                        }).collect(Collectors.toList()));
+
+                        return proxys;
                     }
 
                     @Override

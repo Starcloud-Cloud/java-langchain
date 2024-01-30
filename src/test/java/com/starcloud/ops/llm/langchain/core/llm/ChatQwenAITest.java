@@ -104,4 +104,54 @@ public class ChatQwenAITest extends SpringBootTests {
     }
 
 
+    @Test
+    public void chatVLPromptTest() {
+
+        ChatVLQwen chatVLQwen = new ChatVLQwen();
+        chatVLQwen.setTopP(0.9D);
+
+        log.info(chatVLQwen.call(Arrays.asList(com.starcloud.ops.llm.langchain.core.schema.message.multimodal.HumanMessage.
+                                ofImages("根据标题：```春风拂面，万物复苏。```为每张图片配上符合图片意境的标题，标题在20个字内!!!",
+                                        Arrays.asList("https://download.mofaai.com.cn/mofaai/images/upload/df43d3533e54449aafb40d8f641441d9.jpg?x-oss-process=image/resize,m_lfit,w_448,h_448",
+                                                "https://download.mofaai.com.cn/mofaai/images/upload/16c9927c7bfe4c15bfd443b5850185a1.jpg?x-oss-process=image/resize,m_lfit,w_448,h_448")
+
+                                )
+
+                        )
+                )
+        );
+
+
+    }
+
+
+    @Test
+    public void chatVLPromptV2Test() {
+
+        ChatVLQwen chatVLQwen = new ChatVLQwen();
+        chatVLQwen.setTopP(0.9D);
+
+        //汉堡图
+//        log.info(chatVLQwen.call(Arrays.asList(com.starcloud.ops.llm.langchain.core.schema.message.multimodal.HumanMessage.
+//                                ofImages("描述下图片的时间,地点,人物,场景和意境，不要增加图片上没有的东西！！！",
+//                                        Arrays.asList("https://download.hotsalecloud.com/mofaai/images/upload/d49b75339e8542a09b66bf71d04f541c.jpg?x-oss-process=image/resize,m_lfit,w_448,h_448"))
+//
+//                        )
+//                )
+//        );
+
+        //汉堡图
+        log.info(chatVLQwen.call(Arrays.asList(com.starcloud.ops.llm.langchain.core.schema.message.multimodal.HumanMessage.
+                                ofImages("为图片配上一个符合图片场景和意境的标题和副标题，标题在5个中文字内，让人看到有购买欲。输出格式：```" +
+                                                "标题: \r\n" +
+                                                "副标题: ```",
+                                        Arrays.asList("https://download.hotsalecloud.com/mofaai/images/upload/d49b75339e8542a09b66bf71d04f541c.jpg?x-oss-process=image/resize,m_lfit,w_448,h_448"))
+
+                        )
+                )
+        );
+
+
+    }
+
 }

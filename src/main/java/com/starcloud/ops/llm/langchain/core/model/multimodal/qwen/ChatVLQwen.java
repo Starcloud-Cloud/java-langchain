@@ -36,19 +36,21 @@ public class ChatVLQwen extends BaseMultiModalChatModel<MultiModalConversationRe
 
     private static QwenAIConfig qwenAIConfig = SpringUtil.getBean("qwenAIConfig");
 
-    private String model = ModelTypeEnum.QWEN.getName();
+    private String model = MultiModalConversation.Models.QWEN_VL_CHAT_V1;
 
     private Double topP = 0.5d;
 
-    private Integer topK = 0;
-
     private Boolean stream = false;
 
-    private Boolean enableSearch = false;
-
-    private int seed;
-
     private String resultFormat = "message";
+
+    public ChatVLQwen() {
+    }
+
+    public ChatVLQwen(String model, Double topP) {
+        this.model = model;
+        this.topP = topP;
+    }
 
 
     @Override
@@ -65,9 +67,9 @@ public class ChatVLQwen extends BaseMultiModalChatModel<MultiModalConversationRe
         List<com.alibaba.dashscope.common.MultiModalMessage> chatMessages = Optional.ofNullable((List<MultiModalMessage>) messages).orElse(new ArrayList<>()).stream().map(MessageConvert::BaseMessage2QwenMessage).collect(Collectors.toList());
 
         MultiModalConversationParam param = MultiModalConversationParam.builder()
-                .model(MultiModalConversation.Models.QWEN_VL_PLUS)
+                .model(this.getModel())
                 .apiKey(qwenAIConfig.randomApiKey())
-                .topP(top)
+                .topP(this.getTopP())
                 .messages(chatMessages)
                 .build();
 

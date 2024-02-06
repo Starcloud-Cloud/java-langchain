@@ -204,14 +204,46 @@ log.info("loadMemoryVariables: {}", memory.loadMemoryVariables());
 更多示例内容: [Memory](src/test/java/com/starcloud/ops/llm/langchain/learning/langchain/code/Memory.java)
 
 
+## 5. 千问大模型
+支持最新的VL接口
 
-## 5. 支持
+```java
+        ChatVLQwen chatVLQwen = new ChatVLQwen();
+        chatVLQwen.setTopP(0.9D);
+
+        //汉堡图
+        log.info(chatVLQwen.call(Arrays.asList(com.starcloud.ops.llm.langchain.core.schema.message.multimodal.HumanMessage.
+                                ofImages("描述下图片的时间,地点,人物,场景和意境，不要增加图片上没有的东西！！！",
+                                        Arrays.asList("https://download.hotsalecloud.com/mofaai/images/upload/d49b75339e8542a09b66bf71d04f541c.jpg?x-oss-process=image/resize,m_lfit,w_448,h_448"))
+
+                        )
+                )
+        );
+
+        //汉堡图
+        log.info(chatVLQwen.call(Arrays.asList(com.starcloud.ops.llm.langchain.core.schema.message.multimodal.HumanMessage.
+                                ofImages("为图片配上一个符合图片场景和意境的标题和副标题，标题在5个中文字内，让人看到有购买欲。输出格式：```" +
+                                                "标题: \r\n" +
+                                                "副标题: ```",
+                                        Arrays.asList("https://download.hotsalecloud.com/mofaai/images/upload/d49b75339e8542a09b66bf71d04f541c.jpg?x-oss-process=image/resize,m_lfit,w_448,h_448"))
+
+                        )
+                )
+        );
+```
+
+## 版本更新
+
+### 2024/2/6 `v1.0.7`
+支持千问VL模型接口
+
+## 6. 支持
 
 不要犹豫，尽管问!
 
 如果你在java-langchain中发现一个bug，[打开一个issue](https://github.com/Starcloud-Cloud/java-langchain/issues)
 
-## 6. 贡献
+## 7. 贡献
 这是一个活跃的开源项目。我们始终向想要使用该系统或为其做出贡献的人开放。请注意，pull requests应该合并到**dev**分支中。
 
 如果您正在寻找适合您技能的实施任务，请联系我。
@@ -229,4 +261,3 @@ log.info("loadMemoryVariables: {}", memory.loadMemoryVariables());
 4. 使用 LangChain 访问个人数据(开发中)
 
 学习入口: [Doc](https://github.com/Starcloud-Cloud/java-langchain/tree/master/doc)
-

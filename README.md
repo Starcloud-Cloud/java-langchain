@@ -232,11 +232,6 @@ log.info("loadMemoryVariables: {}", memory.loadMemoryVariables());
         );
 ```
 
-## 版本更新
-
-### 2024/2/6 `v1.0.7`
-支持千问VL模型接口
-
 ## 6. 支持
 
 不要犹豫，尽管问!
@@ -247,6 +242,13 @@ log.info("loadMemoryVariables: {}", memory.loadMemoryVariables());
 这是一个活跃的开源项目。我们始终向想要使用该系统或为其做出贡献的人开放。请注意，pull requests应该合并到**dev**分支中。
 
 如果您正在寻找适合您技能的实施任务，请联系我。
+
+---
+
+# 版本更新
+
+### 2024/2/6 `v1.0.7`
+支持千问VL模型接口
 
 ---
 

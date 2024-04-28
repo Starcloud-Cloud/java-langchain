@@ -15,15 +15,20 @@ import java.util.stream.Collectors;
  */
 public enum ModelTypeEnum {
 
-    GPT_4_TURBO("gpt-4-1106-preview", EncodingType.CL100K_BASE, 128000),
+    GPT_4_TURBO("gpt-4-turbo", EncodingType.CL100K_BASE, 128000),
     GPT_4("gpt-4", EncodingType.CL100K_BASE, 8192),
     GPT_4_32K("gpt-4-32k", EncodingType.CL100K_BASE, 32768),
 
-    GPT_3_5_TURBO("gpt-3.5-turbo", EncodingType.CL100K_BASE, 4096),
-    GPT_3_5_TURBO_16K("gpt-3.5-turbo-1106", EncodingType.CL100K_BASE, 16385),
+    GPT_3_5_TURBO("gpt-3.5-turbo", EncodingType.CL100K_BASE, 16385),
+    GPT_3_5_TURBO_16K("gpt-3.5-turbo", EncodingType.CL100K_BASE, 16385),
 
     TEXT_EMBEDDING_ADA_002("text-embedding-ada-002", EncodingType.CL100K_BASE, 8191),
     TEXT_DAVINCI_003("text-davinci-003", EncodingType.P50K_BASE, 4097),
+
+    //@todo 先加上，但是EncodingType 不确定
+    TEXT_EMBEDDING_3_SMALL("text-embedding-3-small", EncodingType.CL100K_BASE, 8191),
+    TEXT_EMBEDDING_3_LARGE("text-embedding-3-large", EncodingType.CL100K_BASE, 8191),
+
     //不知道最大Tokens多少，随便写的
     QWEN("qwen-turbo", EncodingType.CL100K_BASE, 8192);
 

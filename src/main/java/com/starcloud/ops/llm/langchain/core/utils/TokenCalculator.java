@@ -34,16 +34,24 @@ public class TokenCalculator {
             case TEXT_EMBEDDING_ADA_002:
                 unitPrice = new BigDecimal(0.0001);
                 break;
+            case TEXT_EMBEDDING_3_SMALL:
+                unitPrice = new BigDecimal(0.00002);
+                break;
+            case TEXT_EMBEDDING_3_LARGE:
+                unitPrice = new BigDecimal(0.00013);
+                break;
             case GPT_3_5_TURBO:
-            case TEXT_DAVINCI_003:
-                unitPrice = isInput ? new BigDecimal(0.001) : new BigDecimal(0.002);
+//            case TEXT_DAVINCI_003:
+                unitPrice = isInput ? new BigDecimal(0.0005) : new BigDecimal(0.0015);
                 break;
             case GPT_3_5_TURBO_16K:
-                unitPrice = isInput ? new BigDecimal(0.001) : new BigDecimal(0.002);
+                unitPrice = isInput ? new BigDecimal(0.0005) : new BigDecimal(0.0015);
                 break;
             case GPT_4:
-            case GPT_4_TURBO:
                 unitPrice = isInput ? new BigDecimal(0.03) : new BigDecimal(0.06);
+                break;
+            case GPT_4_TURBO:
+                unitPrice = isInput ? new BigDecimal(0.01) : new BigDecimal(0.03);
                 break;
             case GPT_4_32K:
                 unitPrice = isInput ? new BigDecimal(0.06) : new BigDecimal(0.12);

@@ -60,6 +60,10 @@ public class TokenCalculator {
                 //0.008元/1000tokens  0。008/7.2
                 unitPrice = isInput ? new BigDecimal(0.0012) : new BigDecimal(0.0012);
                 break;
+            case QWEN_MAX:
+                //0.12元/1000tokens  0.12/7.2
+                unitPrice = isInput ? new BigDecimal(0.015) : new BigDecimal(0.015);
+                break;
             default:
                 unitPrice = new BigDecimal(0);
         }

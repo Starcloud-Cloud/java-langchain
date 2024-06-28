@@ -15,7 +15,9 @@ import java.util.stream.Collectors;
  */
 public enum ModelTypeEnum {
 
+    GPT_4_O("gpt-4o", EncodingType.CL100K_BASE, 128000),
     GPT_4_TURBO("gpt-4-turbo", EncodingType.CL100K_BASE, 128000),
+    @Deprecated
     GPT_4("gpt-4", EncodingType.CL100K_BASE, 8192),
     GPT_4_32K("gpt-4-32k", EncodingType.CL100K_BASE, 32768),
 

@@ -50,6 +50,9 @@ public class TokenCalculator {
             case GPT_4:
                 unitPrice = isInput ? new BigDecimal(0.03) : new BigDecimal(0.06);
                 break;
+            case GPT_4_O:
+                unitPrice = isInput ? new BigDecimal(0.005) : new BigDecimal(0.015);
+                break;
             case GPT_4_TURBO:
                 unitPrice = isInput ? new BigDecimal(0.01) : new BigDecimal(0.03);
                 break;
@@ -58,11 +61,11 @@ public class TokenCalculator {
                 break;
             case QWEN:
                 //0.008元/1000tokens  0。008/7.2
-                unitPrice = isInput ? new BigDecimal(0.0012) : new BigDecimal(0.0012);
+                unitPrice = isInput ? new BigDecimal(0.0003) : new BigDecimal(0.0008);
                 break;
             case QWEN_MAX:
                 //0.12元/1000tokens  0.12/7.2
-                unitPrice = isInput ? new BigDecimal(0.015) : new BigDecimal(0.015);
+                unitPrice = isInput ? new BigDecimal(0.006) : new BigDecimal(0.016);
                 break;
             default:
                 unitPrice = new BigDecimal(0);

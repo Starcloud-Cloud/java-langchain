@@ -1,5 +1,6 @@
 package com.starcloud.ops.llm.langchain.core.llm;
 
+import com.alibaba.dashscope.aigc.generation.Generation;
 import com.starcloud.ops.llm.langchain.core.SpringBootTests;
 import com.starcloud.ops.llm.langchain.core.callbacks.StreamingStdOutCallbackHandler;
 import com.starcloud.ops.llm.langchain.core.chain.LLMChain;
@@ -32,6 +33,7 @@ public class ChatQwenAITest extends SpringBootTests {
     public void generateTest() {
 
         Qwen llm = new Qwen();
+        llm.setModel( Generation.Models.QWEN_TURBO);
 
         log.info("result : {}", llm.predict("介绍下杭州亚运会的 电竞比赛内容，说下杭州亚运会的反面新闻"));
 
